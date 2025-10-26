@@ -1,0 +1,70 @@
+@import 'tailwindcss';
+@import 'animate.css';
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+*{
+  font-family: "Playfair Display", "serif";
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100lvh;
+  min-height: 100dvh;
+}
+
+.login-input { 
+  @apply border p-2 rounded-sm md:p-3.5 md:rounded-md;  
+} 
+.register-input { 
+  @apply border rounded-xs p-2 md:rounded-md md:p-3;  
+} 
+.otp-input { 
+  @apply w-1/6 border rounded-xl md:rounded-2xl text-center;  
+}
+
+/* scholarship module */
+/* ─────────── Smaller Sizes ─────────── */
+.responsive-text-xxs {
+  font-size: clamp(0.5rem, 1.25vw, 0.9rem);
+}
+
+.responsive-text-xs {
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+}
+
+.responsive-text-small {
+  font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+}
+
+/* ─────────── Base to Mid ─────────── */
+.responsive-text-medium {
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.responsive-text-large {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+}
+
+/* ─────────── Larger Sizes ─────────── */
+.responsive-text-xl {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+}
+
+.responsive-text-2xl {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.responsive-text-3xl {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}

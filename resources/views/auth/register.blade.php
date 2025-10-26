@@ -1,0 +1,132 @@
+@extends('layouts.auth')
+
+@section('maincontent')
+
+  <div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-screen flex items-center justify-center">
+    
+    <div class="flex flex-col md:flex-row">
+
+      <div id="panel" class="rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl p-2 flex flex-row gap-3 items-center justify-center bg-[rgb(59,0,151)] md:flex-col md:p-3 md:gap-5">
+        <img class="h-24 w-auto md:h-auto md:w-5/6" src="{{ asset('assets/images/pg-logo.png') }}" alt="Padre Garcia logo">
+        <div class="flex flex-col gap-1 md:gap-3 items-center justify-center">
+          <p class="animate__animated animate__fadeInLeft text-white text-base md:text-xl text-nowrap">Padre Garcia Batangas</p>
+          <p class="animate__animated animate__fadeInLeft text-white text-[.5rem] md:text-sm text-nowrap">" The Cattle Trading Capital of the Philippines "</p>
+        </div>
+      </div>
+
+      <div class="overflow-hidden w-xs rounded-br-xl rounded-bl-xl md:rounded-bl-none md:w-xl md:rounded-tr-xl ">
+
+        <div id="wrapper" class="flex w-[300%] transition-transform duration-700 ease-in-out">
+
+          <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
+
+            <div class="w-full grid py-4 px-2 grid-rows-[1fr_5.5fr_30px] md:grid-rows-[1fr_3fr_70px] md:p-5">
+
+              <div class="flex items-center justify-center flex-col gap-2 md:gap-4">
+                <p class="text-2xl md:text-5xl font-bold">Get Started</p>
+                <p class="text-sm md:text-base">Already have an account? <a href="{{ route('login') }}" class="text-blue-500">Log in</a> </p>
+              </div>
+
+              <form class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
+
+                <div class="grid grid-cols-2 gap-2 md:gap-3">
+                  
+                  <input type="text" placeholder="First Name" class="register-input">
+                  <input type="text" placeholder="Last Name" class="register-input">
+                  <select class="register-input cursor-pointer">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                  <input type="text" class="datepicker register-input" placeholder="Birthday">
+                </div>
+                
+                <input type="text" placeholder="Full Address" class="register-input">
+                <input type="email" placeholder="Email Address" class="register-input">
+                <input type="text" placeholder="Phone Number" class="register-input">
+
+                <div class="grid grid-cols-2 gap-2 md:gap-3">
+                  <input type="password" placeholder="Password" class="register-input">
+                  <input type="password" placeholder="Confirm Password" class="register-input">
+                </div>
+
+              </form>
+
+              <div class="flex justify-center items-center">
+                  <button id="continue-btn" class="border text-sm py-1 px-4 md:py-3 md:px-8 md:rounded-2xl md:text-base bg-blue-500 text-white rounded-md cursor-pointer">Continue</button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
+
+            <div class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+
+              <div class="flex flex-col text-center gap-1 md:gap-5">
+                <p class="text-lg md:text-3xl">OTP VERIFICATION</p>
+                <div>
+                  <p class="text-[.5rem] md:text-sm">Please Enter the OTP (One-Time Password) sent to your </p>
+                  <p class="text-[.5rem] md:text-sm">registered phone number to complete your verification</p>
+                </div>
+              </div>
+
+              <div class="h-32 md:h-64">
+                <img class="h-full" src="{{ asset('assets/images/otp-sent.png') }}" alt="OTP sent">
+              </div>
+
+              <div class="flex justify-between items-center w-3xs md:w-sm">
+                <p class="text-[.5rem] md:text-xs">Remaining time: <span class="text-blue-500">00:59s</span></p>
+                <p class="text-[.5rem] md:text-xs">Didn’t get the code? <span class="text-blue-500 cursor-pointer">Resend</span></p>
+              </div>
+
+              <div class="w-3xs h-10 gap-1 mb-4 md:w-sm md:h-16 flex md:gap-2 md:mb-8">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+              </div>
+              <div class="w-3xs gap-1 md:w-sm h-[15%] flex flex-col md:gap-2">
+                <button id="verify-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Verify</button>
+                <button id="back-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-blue-500">Back</button>
+              </div>
+              
+            </div>
+          
+          </div>
+
+          <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
+
+            <div class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+
+              <div class="flex flex-col text-center">
+                <p class="text-lg md:text-3xl">User ID: <span class="text-blue-500">25-LAROZA1</span></p>
+              </div>
+
+              <div class="h-32 md:h-64">
+                <img class="h-full" src="{{ asset('assets/images/otp-success.png') }}" alt="OTP success">
+              </div>
+
+              <div class="flex flex-col text-center gap-1 mb-10 md:mb-5 md:gap-5">
+                <p class="text-lg md:text-3xl">VERIFIED</p>
+                <p class="text-[.5rem] md:text-sm">Your account has been verified successfully</p>
+              </div>
+
+              <div class="w-3xs md:w-sm h-[7.5%] flex flex-col">
+                <button id="done-btn" class="cursor-pointer border h-full rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Done</button>
+              </div>
+
+            </div>
+          
+          </div>
+
+        </div>
+
+      </div>
+    
+    </div>
+    
+  </div>
+@endsection
