@@ -27,33 +27,35 @@
                 <p class="text-sm md:text-base">Already have an account? <a href="{{ route('login') }}" class="text-blue-500">Log in</a> </p>
               </div>
 
-              <form class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
-
+              <form method="POST" action="{{ route('register.store') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
+                @csrf
                 <div class="grid grid-cols-2 gap-2 md:gap-3">
-                  
-                  <input type="text" placeholder="First Name" class="register-input">
-                  <input type="text" placeholder="Last Name" class="register-input">
-                  <select class="register-input cursor-pointer">
+                  <input type="text" name="first_name" placeholder="First Name" class="register-input" required>
+                  <input type="text" name="last_name" placeholder="Last Name" class="register-input" required>
+
+                  <select name="gender" class="register-input cursor-pointer" required>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
-                  <input type="text" class="datepicker register-input" placeholder="Birthday">
+
+                  <input type="text" name="birthday" class="datepicker register-input" placeholder="Birthday">
                 </div>
-                
-                <input type="text" placeholder="Full Address" class="register-input">
-                <input type="email" placeholder="Email Address" class="register-input">
-                <input type="text" placeholder="Phone Number" class="register-input">
+
+                <input type="text" name="address" placeholder="Full Address" class="register-input" required>
+                <input type="email" name="email" placeholder="Email Address" class="register-input" required>
+                <input type="text" name="phone" placeholder="Phone Number" class="register-input" required>
 
                 <div class="grid grid-cols-2 gap-2 md:gap-3">
-                  <input type="password" placeholder="Password" class="register-input">
-                  <input type="password" placeholder="Confirm Password" class="register-input">
+                  <input type="password" name="password" placeholder="Password" class="register-input" required>
+                  <input type="password" name="password_confirmation" placeholder="Confirm Password" class="register-input" required>
                 </div>
 
+                <div class="flex justify-center items-center">
+                  <button id="continue-btn" class="border text-sm py-1 px-4 md:py-3 md:px-8 md:rounded-2xl md:text-base bg-blue-500 text-white rounded-md cursor-pointer">Continue</button>
+                </div>
               </form>
 
-              <div class="flex justify-center items-center">
-                  <button id="continue-btn" class="border text-sm py-1 px-4 md:py-3 md:px-8 md:rounded-2xl md:text-base bg-blue-500 text-white rounded-md cursor-pointer">Continue</button>
-              </div>
+              
 
             </div>
 
