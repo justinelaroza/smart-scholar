@@ -23,3 +23,5 @@ Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('schol
 Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
 Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
 Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
