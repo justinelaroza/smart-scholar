@@ -10,6 +10,7 @@ use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\FacebookController;
 
+// Public pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
@@ -19,7 +20,13 @@ Route::get('/support', [SupportController::class, 'show'])->name('support');
 
 Route::get('/facebook-feed-ajax', [FacebookController::class, 'feedAjax']);
 
+// Scholarship routes
 Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
 Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
 Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
 Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+
+Route::post('/register/step1', [RegisterController::class, 'storeStep1'])->name('register.step1');
+Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp');
+
+// (Later we'll add: Route::post('/register/verify-otp', ...) for Verify button)
