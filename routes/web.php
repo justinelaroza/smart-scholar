@@ -28,5 +28,6 @@ Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->nam
 
 // --- NEW: handle the first step of registration (Continue button) ---
 Route::post('/register/step1', [RegisterController::class, 'storeStep1'])->name('register.step1');
+Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp');
 
 // (Later we'll add: Route::post('/register/verify-otp', ...) for Verify button)
