@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-             $table->string('account_code')->unique()->after('id');
+            $table->string('account_code');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
