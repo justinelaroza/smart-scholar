@@ -22,14 +22,14 @@
           {{-- Account Code / Username --}}
           <input
               type="text"
-              name="name"
+              name="account_code"
               placeholder="Account ID"
               class="login-input"
-              value="{{ old('name') }}"
+              value="{{ old('account_code') }}"
               required
               autofocus
           >
-          @error('name')
+          @error('account_code')
               <div class="text-red-600 text-xs md:text-sm">{{ $message }}</div>
           @enderror
 

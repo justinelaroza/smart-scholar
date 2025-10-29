@@ -23,15 +23,14 @@ class LoginController extends Controller
     {
         // 1. Validate inputs from the form
         $credentials = $request->validate([
-            'name' => ['required', 'string'],      // <- using 'name' as the account ID / username
+            'account_code' => ['required', 'string'], 
             'password' => ['required', 'string'],
         ]);
 
-        // 2. Attempt login using 'name' and 'password'
-        // remember checkbox still optional
+        // 2. Attempt login using 'account_code' and 'password'
         if (Auth::attempt(
             [
-                'name' => $credentials['name'],
+                'account_code' => $credentials['account_code'],  // <- Use 'account_code' here
                 'password' => $credentials['password'],
             ],
             $request->boolean('remember')
@@ -39,14 +38,14 @@ class LoginController extends Controller
             // 3. Protect against session fixation
             $request->session()->regenerate();
 
-            // 4. Send them to scholarship page
+            // 4. Send them to the intended page or scholarship page
             return redirect()->intended(route('scholarship'));
         }
 
         // 5. Failed login -> send back with error, keep the name field filled
         return back()->withErrors([
-            'name' => 'Invalid ID or password.',
-        ])->onlyInput('name');
+            'account_code' => 'Invalid Account ID or password.',
+        ])->onlyInput('account_code');  // <- Keep 'account_code' input filled on error
     }
 
     /**
