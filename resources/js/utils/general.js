@@ -1,54 +1,125 @@
 window.addEventListener("DOMContentLoaded", () => {
 
-  const wrapper = document.getElementById("wrapper");
-  if (!wrapper) return;
+  const form = document.getElementById('registerForm');
+    const wrapper = document.getElementById('wrapper');
+    const devOtpMessage = document.getElementById('devOtpMessage');
+    const pendingIdHolder = document.getElementById('pendingIdHolder');
+    const verifyBtn = document.getElementById('verify-btn');
+    const backBtn = document.getElementById('back-btn');
+    const accountCodeText = document.getElementById('accountCodeText');
+    const doneBtn = document.getElementById('done-btn'); // <-- new
 
-  const continueBtn = document.getElementById("continue-btn");
-  const verifyBtn = document.getElementById("verify-btn");
-  const backBtn = document.getElementById("back-btn");
-  const doneBtn = document.getElementById("done-btn");
+    // STEP 1: Continue (save registration + show OTP panel)
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault(); // stop page reload
 
-  function setStep(step) {
-    wrapper.classList.remove("translate-x-0", "-translate-x-1/3", "-translate-x-2/3");
+        const formData = new FormData(form);
+        const csrfToken = form.querySelector('input[name="_token"]').value;
 
-      if (step === "first") {
-      wrapper.classList.add("translate-x-0");
-    } else if (step === "second") {
-      wrapper.classList.add("-translate-x-1/3");
-    } else if (step === "third") {
-      wrapper.classList.add("-translate-x-2/3");
-    }
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
 
-    localStorage.setItem("currentStep", step);
-  }
+        if (response.status === 422) {
+            const errorData = await response.json();
+            console.log('Validation errors (step1):', errorData.errors);
+            alert('Please check your inputs:\n' + JSON.stringify(errorData.errors, null, 2));
+            return;
+        }
 
-  continueBtn.addEventListener("click", () => setStep('second'));
-  verifyBtn.addEventListener("click", () => setStep('third'));
-  backBtn.addEventListener("click", () => setStep('first'));
-  doneBtn.addEventListener("click", () => {
-    localStorage.removeItem('currentStep');
-    window.location.href = '/login';
-  });
+        if (!response.ok) {
+            const text = await response.text();
+            console.error('Registration error status:', response.status);
+            console.error('Registration error body:', text);
+            alert(
+                'Server error during registration.\n\n' +
+                'Status: ' + response.status + '\n' +
+                'Body: ' + text
+            );
+            return;
+        }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const step = localStorage.getItem("currentStep") || "register";
-    setStep(step);
-  });
+        const data = await response.json();
+        // data = { status:"ok", pending_id, otp_preview }
 
-  const inputs = document.querySelectorAll(".otp-input");
+        // stash the pending id so Verify can use it
+        pendingIdHolder.value = data.pending_id;
 
-  inputs.forEach((input, index) => {
-    input.addEventListener("input", () => {
-      if (input.value.length === 1 && index < 5) {
-        inputs[index + 1].focus(); 
-      }
+        // show dev OTP
+        devOtpMessage.textContent = 'Your OTP (testing): ' + data.otp_preview;
+        devOtpMessage.classList.remove('hidden');
+
+        // slide to OTP panel
+        wrapper.style.transform = 'translateX(-33.333%)';
     });
 
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Backspace" && input.value === "" && index > 0) {
-        inputs[index - 1].focus(); 
-      }
+    // STEP 2: Verify (check OTP, create final user, show account code)
+    verifyBtn.addEventListener('click', async function () {
+        const csrfToken = form.querySelector('input[name="_token"]').value;
+
+        // combine the 6 OTP input boxes
+        const otpInputs = document.querySelectorAll('.otp-input');
+        let otpCode = '';
+        otpInputs.forEach(inp => {
+            otpCode += inp.value.trim();
+        });
+
+        const verifyData = new FormData();
+        verifyData.append('pending_id', pendingIdHolder.value);
+        verifyData.append('otp_code', otpCode);
+
+        const response = await fetch("{{ route('register.verifyOtp') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: verifyData
+        });
+
+        if (response.status === 422) {
+            const errorData = await response.json();
+            console.log('Validation / OTP error:', errorData);
+            alert('OTP invalid or expired.');
+            return;
+        }
+
+        if (!response.ok) {
+            const text = await response.text();
+            console.error('OTP verify error status:', response.status);
+            console.error('OTP verify error body:', text);
+            alert(
+                'Server error during OTP check.\n\n' +
+                'Status: ' + response.status + '\n' +
+                'Body: ' + text
+            );
+            return;
+        }
+
+        const data = await response.json();
+        // data = { status:"ok", account_code:"01-RIVERA" }
+
+        // Show the account code in last panel
+        accountCodeText.textContent = data.account_code;
+
+        // Slide to VERIFIED panel
+        wrapper.style.transform = 'translateX(-66.666%)';
     });
-  });
+
+    // STEP 2.5: Back (return from OTP panel to form panel without losing data)
+    backBtn.addEventListener('click', function () {
+        wrapper.style.transform = 'translateX(0%)';
+    });
+
+    // STEP 3: Done (go to login page)
+    doneBtn.addEventListener('click', function () {
+        // Simple redirect to login route
+        window.location.href = "{{ route('login') }}";
+    });
 
 });
