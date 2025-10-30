@@ -21,12 +21,21 @@ Route::get('/support', [SupportController::class, 'show'])->name('support');
 Route::get('/facebook-feed-ajax', [FacebookController::class, 'feedAjax']);
 
 // Scholarship routes
-Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
-Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
-Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
-Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+Route::middleware('auth')->group(function () {
+    Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
+    Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
+    Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
+    Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+});
 
-Route::post('/register/step1', [RegisterController::class, 'storeStep1'])->name('register.step1');
-Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp');
+Route::post('/register/step1', [RegisterController::class, 'storeStep1'])
+    ->name('register.step1')
+    ->middleware('throttle:3,1');
+
+Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])
+    ->name('register.verifyOtp')
+    ->middleware('throttle:10,1');
+
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.attempt');
 
 // (Later we'll add: Route::post('/register/verify-otp', ...) for Verify button)

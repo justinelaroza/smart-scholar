@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'iprog_sms' => [
+        'token' => env('IPROG_SMS_API_TOKEN'),
+        'base_url' => env('IPROG_SMS_BASE_URL', 'https://sms.iprogtech.com/api/v1/sms_messages'),
+    ],
+
+
 ];
