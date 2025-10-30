@@ -10,16 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('otps', function (Blueprint $table) {
-        $table->id();
-        $table->string('phone_number');         // "639XXXXXXXXX"
-        $table->string('code');                 // "123456"
-        $table->dateTime('expires_at');         // now() + 5 mins
-        $table->boolean('used')->default(false);
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('otps', function (Blueprint $table) {
+            $table->id();
+            $table->string('phone_number');         // "639XXXXXXXXX"
+            $table->string('code');                 // "123456"
+            $table->dateTime('expires_at');         // now() + 5 mins
+            $table->boolean('used')->default(false);
+            $table->timestamps();
+        });
+    }
 
 
     /**

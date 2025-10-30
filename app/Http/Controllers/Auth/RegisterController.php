@@ -9,7 +9,6 @@ use App\Models\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -29,12 +28,12 @@ class RegisterController extends Controller
         $validated = $request->validate([
             'first_name'            => 'required|string|max:255',
             'last_name'             => 'required|string|max:255',
-            'phone'                 => 'required|string|max:20',
+            'phone'                 => 'required|string|max:15',
             'password'              => 'required|min:6|confirmed',
-            'email'                 => 'nullable|email',
-            'gender'                => 'nullable|in:male,female',
-            'birthday'              => 'nullable|date',
-            'address'               => 'nullable|string|max:255',
+            'email'                 => 'required|email',
+            'gender'                => 'required|in:male,female',
+            'birthday'              => 'required|date',
+            'address'               => 'required|string|max:255',
         ]);
 
         // Normalize phone → 63XXXXXXXXXX

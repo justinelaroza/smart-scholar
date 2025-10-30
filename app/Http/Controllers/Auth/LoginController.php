@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Show login form (GET /login)
-     */
     public function show()
     {
         return view('auth.login');
@@ -23,8 +20,8 @@ class LoginController extends Controller
     {
         // 1. Validate inputs from the form
         $credentials = $request->validate([
-            'account_code' => ['required', 'string'], 
-            'password' => ['required', 'string'],
+            'account_code' => ['required|string|max:255'], 
+            'password' => ['required|string|max:255'],
         ]);
 
         // 2. Attempt login using 'account_code' and 'password'
@@ -39,18 +36,13 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             // 4. Send them to the intended page or scholarship page
-            return redirect()->intended(route('scholarship'));
+            return redirect()->intended(route('home'));
         }
 
         // 5. Failed login -> send back with error, keep the name field filled
-        return back()->withErrors([
-            'account_code' => 'Invalid Account ID or password.',
-        ])->onlyInput('account_code');  // <- Keep 'account_code' input filled on error
-    }
+        return back()->withErrors(['invalid' => 'Invalid Account ID or password.',])->onlyInput('account_code');  // <- Keep 'account_code' input filled on error
+    } 
 
-    /**
-     * Logout (optional)
-     */
     public function logout(Request $request)
     {
         Auth::logout();

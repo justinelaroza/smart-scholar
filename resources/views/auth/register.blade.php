@@ -14,14 +14,8 @@
     </div>
 
     <div class="overflow-hidden w-xs rounded-br-xl rounded-bl-xl md:rounded-bl-none md:w-xl md:rounded-tr-xl">
-      @php
-        $currentStep = $step ?? 'form';
-        $translate =
-          $currentStep === 'otp'  ? '-33.333%' :
-          ($currentStep === 'done' ? '-66.666%' : '0%');
-      @endphp
 
-      <div id="wrapper" class="flex w-[300%] transition-transform duration-700 ease-in-out" style="transform: translateX({{ $translate }}); will-change: transform;">
+      <div id="wrapper" class="flex w-[300%] transition-transform duration-700 ease-in-out" >
 
         {{-- Panel 1: Registration --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
@@ -37,17 +31,17 @@
                 <input type="text" name="first_name" placeholder="First Name" class="register-input" value="{{ old('first_name') }}" required>
                 <input type="text" name="last_name" placeholder="Last Name" class="register-input" value="{{ old('last_name') }}" required>
 
-                <select name="gender" class="register-input cursor-pointer">
+                <select name="gender" class="register-input cursor-pointer" required>
                   <option value="">Select Gender</option>
                   <option value="male"   {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
                   <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
                 </select>
 
-                <input type="date" name="birthday" class="datepicker register-input" placeholder="Birthday" value="{{ old('birthday') }}">
+                <input type="date" name="birthday" class="datepicker register-input" placeholder="Birthday" value="{{ old('birthday') }}" required>
               </div>
 
-              <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}">
-              <input type="email" name="email" placeholder="Email Address" class="register-input" value="{{ old('email') }}">
+              <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}" required>
+              <input type="email" name="email" placeholder="Email Address" class="register-input" value="{{ old('email') }}" required>
               <input type="text" name="phone" placeholder="Phone Number" class="register-input" value="{{ old('phone') }}" required>
 
               <div class="grid grid-cols-2 gap-2 md:gap-3">
@@ -136,112 +130,3 @@
 </div>
 @endsection
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('registerForm');
-  const wrapper = document.getElementById('wrapper');
-  const pendingIdHolder = document.getElementById('pendingIdHolder');
-  const verifyBtn = document.getElementById('verify-btn');
-  const backBtn = document.getElementById('back-btn');
-  const accountCodeText = document.getElementById('accountCodeText');
-  const doneBtn = document.getElementById('done-btn');
-  const continueBtn = document.getElementById('continueBtn');
-
-  const otpInputs = document.querySelectorAll('.otp-input');
-  otpInputs.forEach((input, idx) => {
-    input.addEventListener('input', function () {
-      if (this.value.length === 1 && idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
-      if (this.value.length === 0 && idx > 0) otpInputs[idx - 1].focus();
-    });
-  });
-
-  // STEP 1
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    continueBtn.disabled = true;
-
-    const formData = new FormData(form);
-    const csrfToken = form.querySelector('input[name="_token"]').value;
-
-    const response = await fetch(form.action, {
-      method: 'POST',
-      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      body: formData
-    });
-
-    if (response.status === 422) {
-      const errorData = await response.json();
-      alert('Please check your inputs:\n' + JSON.stringify(errorData.errors, null, 2));
-      continueBtn.disabled = false;
-      return;
-    }
-
-    if (!response.ok) {
-      const text = await response.text();
-      alert('Server error during registration.\nStatus: ' + response.status + '\nBody: ' + text);
-      continueBtn.disabled = false;
-      return;
-    }
-
-    const data = await response.json();
-    console.log('Step1 response:', data);
-
-    if (data.status === 'ok') {
-      if (data.pending_id) pendingIdHolder.value = data.pending_id;
-        wrapper.style.transform = 'translateX(-33.333%)';
-      } else {
-        alert(data.message || 'Error during OTP sending.');
-    }
-
-    continueBtn.disabled = false;
-  });
-
-  // STEP 2
-  verifyBtn.addEventListener('click', async function () {
-    const csrfToken = form.querySelector('input[name="_token"]').value;
-
-    let otpCode = '';
-    otpInputs.forEach(inp => otpCode += (inp.value || '').trim());
-
-    const verifyData = new FormData();
-    verifyData.append('pending_id', pendingIdHolder.value);
-    verifyData.append('otp_code', otpCode);
-
-    const response = await fetch("{{ route('register.verifyOtp') }}", {
-      method: 'POST',
-      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      body: verifyData
-    });
-
-    if (response.status === 422) {
-      const err = await response.json();
-      alert(err.message || 'OTP invalid or expired.');
-      return;
-    }
-
-    if (!response.ok) {
-      const text = await response.text();
-      alert('Server error during OTP check.\nStatus: ' + response.status + '\nBody: ' + text);
-      return;
-    }
-
-    const data = await response.json();
-    if (data.status === 'ok') {
-      accountCodeText.textContent = data.account_code || '--';
-      wrapper.style.transform = 'translateX(-66.666%)';
-    } else {
-      alert(data.message || 'OTP invalid or expired.');
-    }
-  });
-
-  // Back
-  backBtn.addEventListener('click', function () {
-    wrapper.style.transform = 'translateX(0%)';
-  });
-
-  // Done
-  doneBtn.addEventListener('click', function () {
-    window.location.href = "{{ route('login') }}";
-  });
-});
-</script>
