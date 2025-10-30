@@ -28,8 +28,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
 });
 
-Route::post('/register/step1', [RegisterController::class, 'storeStep1'])->name('register.step1');
-Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp');
+Route::post('/register/step1', [RegisterController::class, 'storeStep1'])
+    ->name('register.step1')
+    ->middleware('throttle:3,1');
+
+Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])
+    ->name('register.verifyOtp')
+    ->middleware('throttle:10,1');
+
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.attempt');
 
 // (Later we'll add: Route::post('/register/verify-otp', ...) for Verify button)

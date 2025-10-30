@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\PendingRegistration;
 use App\Models\User;
+use App\Services\IprogSmsService;
+use App\Models\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -18,80 +21,145 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    public function storeStep1(Request $request)
+    /**
+     * Step 1: Validate, store session, send OTP, return JSON (200).
+     */
+    public function storeStep1(Request $request, IprogSmsService $sms)
     {
-        $validatedData = $request->validate([
-            'first_name'             => 'required|string|max:255',
-            'last_name'              => 'required|string|max:255',
-            'gender'                 => 'nullable|in:male,female',
-            'birthday'               => 'nullable|date',
-            'address'                => 'nullable|string|max:500',
-            'email'                  => 'nullable|email|max:255',
-            'phone'                  => 'required|string|max:20',
-            'password'               => 'required|min:6|confirmed',
+        $validated = $request->validate([
+            'first_name'            => 'required|string|max:255',
+            'last_name'             => 'required|string|max:255',
+            'phone'                 => 'required|string|max:20',
+            'password'              => 'required|min:6|confirmed',
+            'email'                 => 'nullable|email',
+            'gender'                => 'nullable|in:male,female',
+            'birthday'              => 'nullable|date',
+            'address'               => 'nullable|string|max:255',
         ]);
 
-        // Generate 6-digit OTP
-        $otp = strval(random_int(100000, 999999));
+        // Normalize phone → 63XXXXXXXXXX
+        $digits = preg_replace('/\D/', '', $validated['phone']);
+        if (str_starts_with($digits, '0')) {
+            $digits = '63' . substr($digits, 1);
+        }
+        if (!str_starts_with($digits, '63')) {
+            $digits = '63' . $digits;
+        }
+        $phone = $digits;
 
-        $request->session()->put('registration_data', array_merge($validatedData, [
-            'otp_code' => $otp,
-        ]));
+        // Generate & store OTP (5 min)
+        $otpCode = (string) random_int(100000, 999999);
+        $otpRecord = Otp::create([
+            'phone_number' => $phone,
+            'code'         => $otpCode,
+            'expires_at'   => now()->addMinutes(5),
+            'used'         => false,
+        ]);
+
+        // Save all needed registration data for the verify step
+        $request->session()->put('registration_data', [
+            'first_name' => $validated['first_name'],
+            'last_name'  => $validated['last_name'],
+            'phone'      => $phone,
+            'password'   => $validated['password'],
+            'email'      => $validated['email'] ?? null,
+        ]);
+
+        // Send SMS via IPROG
+        $message = "Your OTP code is {$otpCode}. It will expire in 5 minutes.";
+        $resp = $sms->sendSms($phone, $message);
+
+        // In local/dev, allow flow to continue even if SMS fails
+        if (app()->environment('local') && !$resp['ok']) {
+            Log::warning('IPROG SMS failed in local; allowing flow.', ['resp' => $resp]);
+            $resp['ok'] = true;
+        }
+
+        if (!$resp['ok']) {
+            // Clean up OTP record if you want to be strict
+            $otpRecord->delete();
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Failed to send OTP. Please try again.'
+            ], 200);
+        }
 
         return response()->json([
             'status'      => 'ok',
-            'otp_preview' => $otp, // dev only: show on screen
+            'pending_id'  => $otpRecord->id,
         ]);
     }
 
+    /**
+     * Step 2: Verify OTP, create/find user, return account_code JSON.
+     */
     public function verifyOtp(Request $request)
     {
         $validated = $request->validate([
             'otp_code' => 'required|string|size:6',
+            // optional 'pending_id' if you want to use it instead of session
+            'pending_id' => 'nullable|integer',
         ]);
 
-          $registrationData = $request->session()->get('registration_data');
-
-         if (!$registrationData) {
+        $reg = $request->session()->get('registration_data');
+        if (!$reg) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Registration data not found.',
             ], 422);
         }
 
-          if ($registrationData['otp_code'] !== $validated['otp_code']) {
+        $phone = $reg['phone'];
+
+        // Fetch a matching, unused, non-expired OTP
+        $otp = Otp::where('phone_number', $phone)
+            ->where('code', $validated['otp_code'])
+            ->where('used', false)
+            ->latest()
+            ->first();
+
+        if (!$otp || $otp->isExpired()) {
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Invalid OTP.',
+                'message' => 'Invalid or expired OTP.',
             ], 422);
         }
 
-        $finalEmail = $registrationData['email'] ?? ($registrationData['phone'] . '@autogen.local');
+        // Mark OTP as used
+        $otp->used = true;
+        $otp->save();
 
-        $existingUser = User::where('email', $finalEmail)->first();
-            if ($existingUser) {
-                return response()->json([
-                    'status'        => 'ok',
-                    'account_code'  => $existingUser->account_code,
-                ]);
-            }
+        // Determine final email
+        $finalEmail = $reg['email'] ?? ($reg['phone'] . '@autogen.local');
 
+        // Already exists?
+        $existing = User::where('email', $finalEmail)->first();
+        if ($existing) {
+            $request->session()->forget('registration_data');
+            return response()->json([
+                'status'       => 'ok',
+                'account_code' => $existing->account_code,
+            ]);
+        }
+
+        // Generate simple account code: NN-LASTNAME
         $userNumber = User::count() + 1;
         $prefix = str_pad($userNumber, 2, '0', STR_PAD_LEFT);
-        $accountCode = $prefix . '-' . strtoupper($registrationData['last_name']);
+        $accountCode = $prefix . '-' . strtoupper($reg['last_name']);
 
+        // Create user
         $user = User::create([
-            'name'         => $registrationData['first_name'] . ' ' . $registrationData['last_name'],
+            'name'         => $reg['first_name'] . ' ' . $reg['last_name'],
             'email'        => $finalEmail,
-            'password'     => Hash::make($registrationData['password']),
+            'password'     => Hash::make($reg['password']),
             'account_code' => $accountCode,
         ]);
 
-         $request->session()->forget('registration_data');
+        $request->session()->forget('registration_data');
 
         return response()->json([
-            'status'        => 'ok',
-            'account_code'  => $user->account_code,
+            'status'       => 'ok',
+            'account_code' => $user->account_code,
         ]);
     }
 }
