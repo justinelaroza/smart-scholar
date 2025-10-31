@@ -13,7 +13,7 @@ use App\Http\Controllers\Pages\SupportController;
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate')->middleware('throttle:5,1');
 
 //Register
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
