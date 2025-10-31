@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const verifyBtn = document.getElementById('verify-btn');
   const backBtn = document.getElementById('back-btn');
-  const doneBtn = document.getElementById('done-btn');
 
   // STEP 1
   form.addEventListener('submit', async function (e) {
@@ -194,11 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Back
   backBtn.addEventListener('click', function () {
     wrapper.style.transform = 'translateX(0%)';
-  });
-
-  // Done
-  doneBtn.addEventListener('click', function () {
-    window.location.href = "{{ route('login') }}";
   });
   
 });

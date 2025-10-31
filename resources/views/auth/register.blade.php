@@ -122,7 +122,7 @@
               <p class="text-[.5rem] md:text-sm">Your account has been verified successfully</p>
             </div>
             <div class="w-3xs md:w-sm h-[7.5%] flex flex-col">
-              <button id="done-btn" class="cursor-pointer border h-full rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Done</button>
+              <a href="{{ route('login') }}" class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center responsive-text-small">Done</a>
             </div>
           </div>
         </div>
