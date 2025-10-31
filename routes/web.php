@@ -13,11 +13,11 @@ use App\Http\Controllers\Pages\SupportController;
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.attempt');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 
 //Register
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
-Route::post('/register/step1', [RegisterController::class, 'storeStep1'])->name('register.step1')->middleware('throttle:3,1');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store')->middleware('throttle:3,1');
 Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp')->middleware('throttle:10,1');
 
 //Forgot-Pass

@@ -25,7 +25,7 @@
               <p class="text-sm md:text-base">Already have an account? <a href="{{ route('login') }}" class="text-blue-500">Log in</a></p>
             </div>
 
-            <form id="registerForm" method="POST" action="{{ route('register.step1') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
+            <form id="registerForm" method="POST" action="{{ route('register.store') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
               @csrf
               <div class="grid grid-cols-2 gap-2 md:gap-3">
                 <input type="text" name="first_name" placeholder="First Name" class="register-input" value="{{ old('first_name') }}" required>
@@ -70,7 +70,9 @@
 
         {{-- Panel 2: OTP --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
-          <div class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+          <form id="verifyForm" action="{{ route('register.verifyOtp') }}" method="POST" class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+            @csrf
+
             <div class="flex flex-col text-center gap-1 md:gap-5">
               <p class="text-lg md:text-3xl">OTP VERIFICATION</p>
               <div>
@@ -88,21 +90,21 @@
             </div>
 
             <div class="w-3xs h-10 gap-1 mb-4 md:w-sm md:h-16 flex md:gap-2 md:mb-8">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
             </div>
 
-            <input type="hidden" id="pendingIdHolder" value="">
+            <input type="hidden" name="pending_id" id="pendingIdHolder" value="">
 
             <div class="w-3xs gap-1 md:w-sm h-[15%] flex flex-col md:gap-2">
-              <button id="verify-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Verify</button>
-              <button id="back-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-blue-500">Back</button>
+              <button type="submit" id="verify-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Verify</button>
+              <button type="button" id="back-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-blue-500">Back</button>
             </div>
-          </div>
+          </form>
         </div>
 
         {{-- Panel 3: Done --}}

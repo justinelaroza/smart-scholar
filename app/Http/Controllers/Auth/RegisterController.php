@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
-    /**
-     * Show the registration form (panel 1).
-     */
     public function show()
     {
         return view('auth.register');
@@ -23,7 +20,7 @@ class RegisterController extends Controller
     /**
      * Step 1: Validate, store session, send OTP, return JSON (200).
      */
-    public function storeStep1(Request $request, IprogSmsService $sms)
+    public function store(Request $request, IprogSmsService $sms)
     {
         $validated = $request->validate([
             'first_name'            => 'required|string|max:255',
@@ -36,8 +33,8 @@ class RegisterController extends Controller
             'address'               => 'required|string|max:255',
         ]);
 
-        // Normalize phone → 63XXXXXXXXXX
         $digits = preg_replace('/\D/', '', $validated['phone']);
+
         if (str_starts_with($digits, '0')) {
             $digits = '63' . substr($digits, 1);
         }

@@ -1,28 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('registerForm');
+
   const wrapper = document.getElementById('wrapper');
+
+  const form = document.getElementById('registerForm');
   const pendingIdHolder = document.getElementById('pendingIdHolder');
-  const verifyBtn = document.getElementById('verify-btn');
-  const backBtn = document.getElementById('back-btn');
-  const accountCodeText = document.getElementById('accountCodeText');
-  const doneBtn = document.getElementById('done-btn');
   const continueBtn = document.getElementById('continueBtn');
 
+  const verifyForm = document.getElementById('verifyForm');
   const otpInputs = document.querySelectorAll('.otp-input');
-  
-  otpInputs.forEach((input, index) => {
-    input.addEventListener("input", () => {
-      if (input.value.length === 1 && index < 5) {
-        otpInputs[index + 1].focus(); 
-      }
-    });
+  const accountCodeText = document.getElementById('accountCodeText');
 
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Backspace" && input.value === "" && index > 0) {
-        otpInputs[index - 1].focus(); 
-      }
-    });
-  });
+  const verifyBtn = document.getElementById('verify-btn');
+  const backBtn = document.getElementById('back-btn');
+  const doneBtn = document.getElementById('done-btn');
 
   // STEP 1
   form.addEventListener('submit', async function (e) {
@@ -66,31 +56,50 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // STEP 2
-  verifyBtn.addEventListener('click', async function () {
-    const csrfToken = form.querySelector('input[name="_token"]').value;
 
+  otpInputs.forEach((input, index) => {
+    input.addEventListener("input", () => {
+      if (input.value.length === 1 && index < 5) {
+        otpInputs[index + 1].focus(); 
+      }
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && input.value === "" && index > 0) {
+        otpInputs[index - 1].focus(); 
+      }
+    });
+  });
+
+  verifyForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    verifyBtn.disabled = true;
+
+    const csrfToken = verifyForm.querySelector('input[name="_token"]').value;
+    const formData = new FormData(verifyForm);
+
+    const otpInputs = verifyForm.querySelectorAll('.otp-input');
     let otpCode = '';
     otpInputs.forEach(inp => otpCode += (inp.value || '').trim());
+    formData.append('otp_code', otpCode);
 
-    const verifyData = new FormData();
-    verifyData.append('pending_id', pendingIdHolder.value);
-    verifyData.append('otp_code', otpCode);
-
-    const response = await fetch("{{ route('register.verifyOtp') }}", {
+    const response = await fetch(verifyForm.action, {
       method: 'POST',
       headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      body: verifyData
+      body: formData
     });
 
     if (response.status === 422) {
       const err = await response.json();
       alert(err.message || 'OTP invalid or expired.');
+      verifyBtn.disabled = false;
       return;
     }
 
     if (!response.ok) {
       const text = await response.text();
       alert('Server error during OTP check.\nStatus: ' + response.status + '\nBody: ' + text);
+      verifyBtn.disabled = false; 
       return;
     }
 
@@ -101,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       alert(data.message || 'OTP invalid or expired.');
     }
+
+    verifyBtn.disabled = false;
   });
 
   // Back
@@ -112,4 +123,5 @@ document.addEventListener('DOMContentLoaded', function () {
   doneBtn.addEventListener('click', function () {
     window.location.href = "{{ route('login') }}";
   });
+  
 });

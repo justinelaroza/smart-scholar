@@ -13,7 +13,7 @@
     <div>
 
       {{-- LOGIN FORM --}}
-      <form class="flex flex-col justify-center items-center" method="POST" action="{{ route('login.attempt') }}">
+      <form class="flex flex-col justify-center items-center" method="POST" action="{{ route('login.authenticate') }}">
         @csrf
 
         <div class="flex flex-col w-full mb-2 gap-2 md:gap-3 md:mb-3">
