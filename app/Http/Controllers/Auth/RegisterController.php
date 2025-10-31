@@ -74,16 +74,25 @@ class RegisterController extends Controller
         if (!$resp['ok']) {
             // Clean up OTP record if you want to be strict
             $otpRecord->delete();
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Failed to send OTP. Please try again.'
-            ], 200);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Failed to send OTP. Please try again.'
+                ], 200);
+            }
+
+            return back()->withErrors(['register_error' => 'Failed to send OTP. Please try again.'])->onlyInput('phone');
         }
 
-        return response()->json([
-            'status'      => 'ok',
-            'pending_id'  => $otpRecord->id,
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status'     => 'ok',
+                'pending_id' => $otpRecord->id,
+            ]);
+        }
+
+        return redirect()->route('register.verify')->with('otp_sent', true);
     }
 
     /**
@@ -98,11 +107,17 @@ class RegisterController extends Controller
         ]);
 
         $reg = $request->session()->get('registration_data');
+
         if (!$reg) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Registration data not found.',
-            ], 422);
+
+             if ($request->expectsJson()) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Registration data not found.',
+                ], 422);
+            }
+
+            return back()->withErrors(['register_error' => 'Registration session expired. Please register again.']);
         }
 
         $phone = $reg['phone'];
@@ -115,10 +130,15 @@ class RegisterController extends Controller
             ->first();
 
         if (!$otp || $otp->isExpired()) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Invalid or expired OTP.',
-            ], 422);
+            
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Invalid or expired OTP.',
+                ], 422);
+            }
+
+            return back()->withErrors(['register_error' => 'Invalid or expired OTP.']);
         }
 
         // Mark OTP as used
@@ -132,10 +152,15 @@ class RegisterController extends Controller
         $existing = User::where('email', $finalEmail)->first();
         if ($existing) {
             $request->session()->forget('registration_data');
-            return response()->json([
-                'status'       => 'ok',
-                'account_code' => $existing->account_code,
-            ]);
+            
+             if ($request->expectsJson()) {
+                return response()->json([
+                    'status'       => 'ok',
+                    'account_code' => $existing->account_code,
+                ]);
+            }
+
+            return redirect()->route('login')->with('success', 'Account already exists. You can now log in.');
         }
 
         // Generate simple account code: NN-LASTNAME
@@ -153,9 +178,13 @@ class RegisterController extends Controller
 
         $request->session()->forget('registration_data');
 
-        return response()->json([
-            'status'       => 'ok',
-            'account_code' => $user->account_code,
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status'       => 'ok',
+                'account_code' => $user->account_code,
+            ]);
+        }
+
+        return redirect()->route('login')->with('success', 'Registration complete! You can now log in.');
     }
 }

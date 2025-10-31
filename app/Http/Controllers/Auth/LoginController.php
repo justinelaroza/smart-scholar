@@ -20,8 +20,8 @@ class LoginController extends Controller
     {
         // 1. Validate inputs from the form
         $credentials = $request->validate([
-            'account_code' => ['required|string|max:255'], 
-            'password' => ['required|string|max:255'],
+            'account_code' => 'required|string|max:255', 
+            'password' => 'required|string|max:255',
         ]);
 
         // 2. Attempt login using 'account_code' and 'password'
@@ -35,9 +35,23 @@ class LoginController extends Controller
             // 3. Protect against session fixation
             $request->session()->regenerate();
 
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'ok',
+                    'message' => 'Login successful.',
+                ]);
+            }
+
             // 4. Send them to the intended page or scholarship page
             return redirect()->intended(route('home'));
         }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid Account ID or password.',
+            ], 401);
+        }   
 
         // 5. Failed login -> send back with error, keep the name field filled
         return back()->withErrors(['invalid' => 'Invalid Account ID or password.',])->onlyInput('account_code');  // <- Keep 'account_code' input filled on error
