@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('title');
             $table->string('funder');
             $table->text('description');
-            $table->enum('education_level', ['senior_highschool', 'college'])->default('college');
-            $table->date('submission_deadline'); 
-            $table->integer('amount'); 
-            $table->enum('status', ['open', 'close'])->default('open');
-            $table->string('image'); 
+            $table->enum('education_level', ['Any', 'Senior High', 'College'])->default('Any');
+            $table->date('application_start');             
+            $table->date('submission_deadline');
+            $table->integer('amount');
+            $table->enum('status', ['Open', 'Close'])->default('Open');
+            $table->string('image')->default('assets/images/municipality.jpg');
+            $table->string('residency_requirement')->default('Padre Garcia, Batangas');
             $table->timestamps();
         });
     }

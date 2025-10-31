@@ -31,9 +31,12 @@ Route::get('/facebook-feed-ajax', [HomeController::class, 'feedAjax']);
 
 //Scholarship
 Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
-Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
-Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
-Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+Route::get('/scholarship/{id}', [ScholarshipController::class, 'show'])->name('scholarship.show');
+
+Route::middleware('auth')->group(function () {
+  Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
+  Route::get('/scholarship/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+});
 
 //About
 Route::get('/about', [AboutController::class, 'show'])->name('about');
