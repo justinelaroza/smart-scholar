@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://kit.fontawesome.com/729ccf9ac8.js" crossorigin="anonymous"></script>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/components/navbar.js'])
 </head>
 <body>
 
@@ -16,6 +16,8 @@
   </main>
 
   <x-footer />
+
+  @yield('scripts')
 
 </body>
 </html>

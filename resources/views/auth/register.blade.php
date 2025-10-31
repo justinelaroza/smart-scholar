@@ -1,6 +1,7 @@
 @extends('layouts.auth')
 
 @section('maincontent')
+
 <div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')"
      class="bg-cover bg-no-repeat bg-center min-h-screen flex items-center justify-center">
 
@@ -130,5 +131,11 @@
     </div>
   </div>
 </div>
+
 @endsection
 
+@section('scripts')
+
+  @vite(['resources/js/auth/register.js'])
+  
+@endsection

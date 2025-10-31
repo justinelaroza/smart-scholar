@@ -29,4 +29,19 @@ window.addEventListener("DOMContentLoaded", () => {
   prevBtn.addEventListener("click", previousPic);
 
   setInterval(nextPic, 4000);
+
+  //Facebook script
+  async function loadFeed() {
+      try {
+          const response = await fetch('/facebook-feed-ajax');
+          const data = await response.json();
+          const feedDiv = document.getElementById('feed');
+          feedDiv.innerHTML = data.html;
+      } catch (err) {
+          console.error('Error loading feed:', err);
+      }
+  }
+
+  loadFeed();
+  setInterval(loadFeed, 60000);
 });
