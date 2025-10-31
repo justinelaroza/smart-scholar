@@ -30,14 +30,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (response.status === 422) {
       const errorData = await response.json();
-      alert('Please check your inputs:\n' + JSON.stringify(errorData.errors, null, 2));
+
+      const messages = Object.values(errorData.errors)
+      .flat()
+      .map(msg => `${msg}`)
+      .join('<br>');
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Please check your inputs',
+        html: messages,
+        confirmButtonColor: '#2563eb'
+      });
+
+      continueBtn.disabled = false;
+      return;
+    }
+
+    if (response.status === 429) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Too Many Attempts',
+        text: 'Please wait a few seconds before trying again.',
+        confirmButtonColor: '#2563eb'
+      });
       continueBtn.disabled = false;
       return;
     }
 
     if (!response.ok) {
       const text = await response.text();
-      alert('Server error during registration.\nStatus: ' + response.status + '\nBody: ' + text);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Server Error',
+        text: `Status: ${response.status}\n${text}`,
+        confirmButtonColor: '#2563eb'
+      });
+
       continueBtn.disabled = false;
       return;
     }
@@ -47,9 +77,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (data.status === 'ok') {
       if (data.pending_id) pendingIdHolder.value = data.pending_id;
+        
+      Swal.fire({
+        icon: 'success',
+        title: 'OTP Sent!',
+        text: 'A verification code has been sent to your registered phone number.',
+        confirmButtonColor: '#2563eb'
+      }).then(() => {
         wrapper.style.transform = 'translateX(-33.333%)';
-      } else {
-        alert(data.message || 'Error during OTP sending.');
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: data.message || 'Error during OTP sending.',
+        confirmButtonColor: '#2563eb'
+      });
+
     }
 
     continueBtn.disabled = false;
@@ -91,24 +135,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (response.status === 422) {
       const err = await response.json();
-      alert(err.message || 'OTP invalid or expired.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid OTP',
+        text: err.message || 'OTP invalid or expired.',
+        confirmButtonColor: '#2563eb'
+      });
       verifyBtn.disabled = false;
+      return;
+    }
+
+    if (response.status === 429) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Too Many Attempts',
+        text: 'Please wait a few seconds before trying again.',
+        confirmButtonColor: '#2563eb'
+      });
+      continueBtn.disabled = false;
       return;
     }
 
     if (!response.ok) {
       const text = await response.text();
-      alert('Server error during OTP check.\nStatus: ' + response.status + '\nBody: ' + text);
-      verifyBtn.disabled = false; 
+      Swal.fire({
+        icon: 'error',
+        title: 'Server Error',
+        text: `Status: ${response.status}\n${text}`,
+        confirmButtonColor: '#2563eb'
+      });
+      verifyBtn.disabled = false;
       return;
     }
 
     const data = await response.json();
     if (data.status === 'ok') {
-      accountCodeText.textContent = data.account_code || '--';
-      wrapper.style.transform = 'translateX(-66.666%)';
+      Swal.fire({
+        icon: 'success',
+        title: 'Verification Successful!',
+        text: 'Your account has been successfully verified.',
+        confirmButtonColor: '#2563eb'
+      }).then(() => {
+        accountCodeText.textContent = data.account_code || '--';
+        wrapper.style.transform = 'translateX(-66.666%)';
+      });
     } else {
-      alert(data.message || 'OTP invalid or expired.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Verification Failed',
+        text: data.message || 'OTP invalid or expired.',
+        confirmButtonColor: '#2563eb'
+      });
     }
 
     verifyBtn.disabled = false;
