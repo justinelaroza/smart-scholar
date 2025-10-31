@@ -45,10 +45,21 @@
   <p class="responsive-text-medium md:responsive-text-large text-gray-300 mx-10 md:mx-20">Browse through diffrent scholarhsips that the municipality of padre garcia has to offer!<a href="/scholarship" class="text-blue-400"> Here.</a></p>
 </div>
 
+<div class="w-full text-center mt-12 mb-6">
+  <h2 class="responsive-text-xl font-bold text-gray-800 tracking-wide relative inline-block">
+    Scholarship Posts
+  </h2>
+  <p class="responsive-text-small text-gray-500 mt-4">
+    Discover the latest scholarship opportunities from the Municipality of Padre Garcia.
+  </p>
+</div>
+
 <section class="px-6 py-10 flex items-center justify-center">
+
   <div id="feed" class="bg-white w-[90%] 2xl:w-3/4 mx-auto grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     
   </div>
+
 </section>
 
 @endsection

@@ -17,7 +17,7 @@
   </div>
 
   <!-- Sidebar -->
-  <div id="mobile-sidebar" class="z-50 fixed top-0 right-0 h-screen w-2/3 bg-black text-white flex flex-col items-start p-8 gap-3 transform translate-x-full transition-transform duration-300">
+  <div id="mobile-sidebar" class="z-50 fixed top-0 right-0 h-screen w-2/3 bg-[#282740] text-white flex flex-col items-start p-8 gap-3 transform translate-x-full transition-transform duration-300">
     
     <button id="close-btn" class="self-end mb-4 cursor-pointer text-3xl">
       ✕
