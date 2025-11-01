@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const backBtn = document.getElementById('back-btn');
 
   // STEP 1
+  
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     continueBtn.disabled = true;

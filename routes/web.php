@@ -8,12 +8,14 @@ use App\Http\Controllers\Pages\HomeController;
 use App\Http\Controllers\Pages\ScholarshipController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
+use App\Http\Controllers\Pages\ProfileController;
 
 /* Authentication */
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate')->middleware('throttle:5,1');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //Register
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
@@ -45,5 +47,8 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
+
+//Profile
+Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 
 
