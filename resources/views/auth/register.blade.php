@@ -34,8 +34,8 @@
 
                 <select name="gender" class="register-input cursor-pointer" required>
                   <option value="">Select Gender</option>
-                  <option value="male"   {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
-                  <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="Male"   {{ old('gender') === 'Male' ? 'selected' : '' }}>Male</option>
+                  <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
                 </select>
 
                 <input type="date" name="birthday" class="datepicker register-input" placeholder="Birthday" value="{{ old('birthday') }}" required>
