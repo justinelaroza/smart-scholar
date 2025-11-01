@@ -7,7 +7,7 @@
   <div class="w-[90%] lg:w-3/4">
 
     <div class="flex items-start mb-4">
-      <a href="{{ route('scholarship.show') }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
+      <a href="{{ route('scholarship.show', ['id' => $scholarship->id]) }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
         ← Back
       </a>
     </div>
@@ -280,7 +280,7 @@
 
     <!-- Submit -->
     <div class="mt-10 text-right">
-      <a href="{{ route('scholarship.upload') }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 responsive-text-small cursor-pointer inline-block">Next</a>
+      <a href="{{ route('scholarship.upload', ['id' => $scholarship->id]) }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 responsive-text-small cursor-pointer inline-block">Next</a>
     </div>
   </div>
 </div>

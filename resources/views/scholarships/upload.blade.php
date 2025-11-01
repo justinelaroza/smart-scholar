@@ -6,7 +6,7 @@
   <div class="w-[90%] lg:w-3/4 ">
 
     <div class="flex items-start mb-4">
-      <a href="{{ route('scholarship.create') }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
+      <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
         ← Back
       </a>
     </div>

@@ -52,7 +52,7 @@
 
         <p class="mb-5 responsive-text-xs">Currently have: 100 participants</p>
 
-        <a href="{{ route('scholarship.create') }}" class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center">
+        <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center">
           Apply Now
         </a>
 

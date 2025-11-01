@@ -22,13 +22,17 @@ class ScholarshipController extends Controller
         return view('scholarships.show', compact('scholarship'));
     }
 
-    public function create()
+    public function create($id)
     {
-        return view('scholarships.create');
+        $scholarship = Scholarship::findOrFail($id);
+
+        return view('scholarships.create', compact('scholarship'));
     }
 
-    public function upload()
+    public function upload($id)
     {
-        return view('scholarships.upload');
+        $scholarship = Scholarship::findOrFail($id);
+
+        return view('scholarships.upload', compact('scholarship'));
     }
 }
