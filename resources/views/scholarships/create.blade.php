@@ -14,7 +14,7 @@
     
     <h1 class="responsive-text-xl font-bold text-center mb-3">General Intake Sheet</h1>
 
-    <form action="{{ route('generalinfo', ['id' => $scholarship->id]) }}" method="POST">
+    <form action="{{ route('scholarship.generalinfo', ['id' => $scholarship->id]) }}" method="POST">
       @csrf
       <!-- I. Client’s Identifying Information -->
       <section class="border rounded-xl p-6">

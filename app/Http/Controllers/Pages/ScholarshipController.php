@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Scholarship;
 use App\Models\GeneralInfo;
 use App\Models\FamilyMember;
+use App\Models\FileUpload;
 use Illuminate\Support\Facades\Auth;
 
 class ScholarshipController extends Controller
@@ -139,6 +140,43 @@ class ScholarshipController extends Controller
         }
 
         return redirect()->route('scholarship.upload', ['id' => $id])->with('success', 'General information saved successfully!');
+    }
+
+    public function storeFileUpload(Request $request, $id) 
+    {
+        $validated = $request->validate([
+            'school_registration_form' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'barangay_clearance' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'certificate_of_indigency' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'school_id_front' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'school_id_back' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'cedula' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'breakdown_of_expenses' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $paths = [
+            'school_registration_form' => $request->file('school_registration_form')->store('uploads/school_forms', 'public'),
+            'barangay_clearance' => $request->file('barangay_clearance')->store('uploads/barangay_clearances', 'public'),
+            'certificate_of_indigency' => $request->file('certificate_of_indigency')->store('uploads/indigency_certificates', 'public'),
+            'school_id_front' => $request->file('school_id_front')->store('uploads/school_ids', 'public'),
+            'school_id_back' => $request->file('school_id_back')->store('uploads/school_ids', 'public'),
+            'cedula' => $request->file('cedula')->store('uploads/cedulas', 'public'),
+            'breakdown_of_expenses' => $request->file('breakdown_of_expenses')->store('uploads/expenses', 'public'),
+        ];
+
+        FileUpload::create([
+            'user_id' => Auth::id(),
+            'scholarship_id' => $id,
+            'school_registration_form' => $paths['school_registration_form'],
+            'barangay_clearance' => $paths['barangay_clearance'],
+            'certificate_of_indigency' => $paths['certificate_of_indigency'],
+            'school_id_front' => $paths['school_id_front'],
+            'school_id_back' => $paths['school_id_back'],
+            'cedula' => $paths['cedula'],
+            'breakdown_of_expenses' => $paths['breakdown_of_expenses'],
+        ]);
+
+        return redirect()->route('scholarship')->with('success', 'Files uploaded successfully!');
     }
 
 }

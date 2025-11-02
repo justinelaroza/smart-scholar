@@ -11,8 +11,7 @@ return new class extends Migration
         Schema::create('general_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('scholarship_id')->references('id')->on('scholarships')->constrained()->onDelete('cascade');
-
+            $table->foreignId('scholarship_id')->constrained('scholarships')->onDelete('cascade');
             $table->string('client_name');
             $table->enum('sex',['Male','Female'])->default('Male');
             $table->integer('age');
@@ -31,8 +30,6 @@ return new class extends Migration
             $table->enum('mode_of_admission',['Walk-in','Referral','4Ps Beneficiary'])->default('Walk-in');
             $table->string('referring_party');
             $table->string('referring_contact');
-
-            // II. Beneficiary Identifying Information
             $table->enum('beneficiary_category',['NHTS-PR','ISF','Disadvantaged Individual','Indigenous People','Pantawid Beneficiary'])->default('NHTS-PR');
             $table->string('beneficiary_id_no');
             $table->string('beneficiary_name');
