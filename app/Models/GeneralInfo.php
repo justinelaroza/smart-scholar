@@ -15,4 +15,9 @@ class GeneralInfo extends Model
         'beneficiary_birth_date', 'beneficiary_address', 'beneficiary_birth_place',
         'beneficiary_civil_status'
     ];
+
+    public function scholarship()
+    {
+        return $this->belongsTo(Scholarship::class);
+    }
 }

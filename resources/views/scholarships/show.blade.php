@@ -50,7 +50,7 @@
           </span>
         </div>
 
-        <p class="mb-5 responsive-text-xs">Currently have: 100 participants</p>
+        <p class="mb-5 responsive-text-xs">Currently have: {{ $scholarship->general_infos_count }} participants</p>
 
         <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center">
           Apply Now
