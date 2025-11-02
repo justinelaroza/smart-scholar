@@ -34,6 +34,7 @@ Route::get('/facebook-feed-ajax', [HomeController::class, 'feedAjax']);
 //Scholarship
 Route::middleware('auth')->group(function () {
   Route::get('/scholarship/{id}/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
+  Route::post('/scholarship/{id}/create', [ScholarshipController::class, 'storeGeneralInfo'])->name('generalinfo');
   Route::get('/scholarship/{id}/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
 });
 

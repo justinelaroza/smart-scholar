@@ -50,15 +50,6 @@
 
       @auth
         <a href="{{ route('profile') }}" class="responsive-text-medium text-left p-5 active:bg-white/20 block transition-all duration-200">PROFILE</a>
-
-        <form action="{{ route('logout') }}" method="POST" class="w-full">
-
-          @csrf
-          <button type="submit" class="responsive-text-medium text-left p-5 w-full text-white active:bg-white/20 transition-all duration-200">
-            LOGOUT
-          </button>
-
-        </form>
       @endauth
 
     </div>
