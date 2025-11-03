@@ -10,11 +10,32 @@ use App\Models\FamilyMember;
 use App\Models\FileUpload;
 use Illuminate\Support\Facades\Auth;
 
+use function Pest\Laravel\get;
+
 class ScholarshipController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $scholarships = Scholarship::orderBy('created_at', 'desc')->paginate(5);
+        $query = Scholarship::query();
+
+        if ($request->filled('education_level')) {
+            $query->where('education_level', $request->education_level);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('funder', 'like', "%{$search}%");
+            });
+        }
+
+        $scholarships = $query->orderBy('created_at', 'desc')->paginate(5)->appends($request->query());
 
         return view('scholarships.index', compact('scholarships'));
     }
