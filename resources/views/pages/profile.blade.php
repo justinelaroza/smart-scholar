@@ -29,6 +29,82 @@
       </div>
     </div>
 
+    {{-- SCHOLARSHIP APPLICATIONS --}}
+    <div class="w-full bg-white rounded-3xl shadow-lg p-8 md:p-10 border">
+
+      <h3 class="responsive-text-large font-bold text-[#282740] mb-6 text-center md:text-left">
+        My Scholarship Applications
+      </h3>
+
+      <div class="hidden md:block overflow-x-auto">
+        <table class="min-w-full table-auto border-collapse">
+          <thead>
+            <tr class="bg-blue-600 text-white text-left">
+              <th class="px-6 py-3 rounded-tl-lg responsive-text-small">Scholarship Name</th>
+              <th class="px-6 py-3 responsive-text-small">Status</th>
+              <th class="px-6 py-3 rounded-tr-lg text-center responsive-text-small">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse ($applications as $app)
+              <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
+                <td class="px-6 py-4 font-medium text-gray-800 responsive-text-xxs">{{ $app->scholarship->title }}</td>
+                <td class="px-6 py-4">
+                  <span class="{{ 
+                    $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 
+                    ($app->progress === 'Rejected' ? 'bg-red-100 text-red-700' : 
+                    ($app->progress === 'Requires Revision' ? 'bg-yellow-100 text-yellow-700' : 
+                    'bg-blue-100 text-blue-700')) 
+                  }} px-3 py-1 rounded-full responsive-text-xs font-medium text-nowrap">
+                    {{ $app->progress }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-xs">View</a>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="3" class="text-center py-6 text-gray-500">
+                  <img src="{{ asset('assets/images/empty-search.jpg') }}" alt="No scholarships found"
+                      class="w-60 h-60 object-contain mx-auto mb-4">
+                  <p class="responsive-text-small">No scholarship applications found.</p>
+                </td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="md:hidden space-y-4">
+        @forelse ($applications as $app)
+          <div class="border border-gray-200 rounded-xl p-4 shadow-sm">
+            <p class="responsive-text-medium font-semibold text-gray-800">{{ $app->scholarship->title ?? 'Unknown' }}</p>
+            <p class="responsive-text-small text-gray-600 mt-1">
+              Status: <span class="{{ 
+                $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 
+                ($app->progress === 'Rejected' ? 'bg-red-100 text-red-700' : 
+                ($app->progress === 'Requires Revision' ? 'bg-yellow-100 text-yellow-700' : 
+                'bg-blue-100 text-blue-700')) 
+              }} px-2 py-0.5 rounded-full responsive-text-xs font-medium text-nowrap">
+                {{ $app->progress }}
+              </span>
+            </p>
+            <div class="mt-3 flex justify-end">
+              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-small">View</a>
+            </div>
+          </div>
+        @empty
+          <div class="text-center py-10 text-gray-500">
+            <img src="{{ asset('assets/images/empty-search.jpg') }}" alt="No scholarships found"
+                class="w-48 h-48 object-contain mx-auto mb-4 max-w-full sm:w-64 sm:h-64">
+            <p class="responsive-text-small">No scholarship applications yet.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
+
     {{-- GENERAL INFO + FAMILY MEMBERS --}}
     <div class="w-full flex flex-col gap-5 md:gap-10">
 
@@ -108,82 +184,6 @@
         @endif
       </div>
 
-    </div>
-
-    {{-- SCHOLARSHIP APPLICATIONS --}}
-    <div class="w-full bg-white rounded-3xl shadow-lg p-8 md:p-10 border">
-
-      <h3 class="responsive-text-large font-bold text-[#282740] mb-6 text-center md:text-left">
-        My Scholarship Applications
-      </h3>
-
-      <div class="hidden md:block overflow-x-auto">
-        <table class="min-w-full table-auto border-collapse">
-          <thead>
-            <tr class="bg-blue-600 text-white text-left">
-              <th class="px-6 py-3 rounded-tl-lg responsive-text-small">Scholarship Name</th>
-              <th class="px-6 py-3 responsive-text-small">Status</th>
-              <th class="px-6 py-3 rounded-tr-lg text-center responsive-text-small">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse ($applications as $app)
-              <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
-                <td class="px-6 py-4 font-medium text-gray-800 responsive-text-xxs">{{ $app->scholarship->title }}</td>
-                <td class="px-6 py-4">
-                  <span class="{{ 
-                    $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 
-                    ($app->progress === 'Rejected' ? 'bg-red-100 text-red-700' : 
-                    ($app->progress === 'Requires Revision' ? 'bg-yellow-100 text-yellow-700' : 
-                    'bg-blue-100 text-blue-700')) 
-                  }} px-3 py-1 rounded-full responsive-text-xs font-medium text-nowrap">
-                    {{ $app->progress }}
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-center">
-                  <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-xs">View</a>
-                </td>
-              </tr>
-            @empty
-              <tr>
-                <td colspan="3" class="text-center py-6 text-gray-500">
-                  <img src="{{ asset('assets/images/empty-search.jpg') }}" alt="No scholarships found"
-                      class="w-60 h-60 object-contain mx-auto mb-4">
-                  <p class="responsive-text-small">No scholarship applications found.</p>
-                </td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Mobile Cards -->
-      <div class="md:hidden space-y-4">
-        @forelse ($applications as $app)
-          <div class="border border-gray-200 rounded-xl p-4 shadow-sm">
-            <p class="responsive-text-medium font-semibold text-gray-800">{{ $app->scholarship->title ?? 'Unknown' }}</p>
-            <p class="responsive-text-small text-gray-600 mt-1">
-              Status: <span class="{{ 
-                $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 
-                ($app->progress === 'Rejected' ? 'bg-red-100 text-red-700' : 
-                ($app->progress === 'Requires Revision' ? 'bg-yellow-100 text-yellow-700' : 
-                'bg-blue-100 text-blue-700')) 
-              }} px-2 py-0.5 rounded-full responsive-text-xs font-medium text-nowrap">
-                {{ $app->progress }}
-              </span>
-            </p>
-            <div class="mt-3 flex justify-end">
-              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-small">View</a>
-            </div>
-          </div>
-        @empty
-          <div class="text-center py-10 text-gray-500">
-            <img src="{{ asset('assets/images/empty-search.jpg') }}" alt="No scholarships found"
-                class="w-48 h-48 object-contain mx-auto mb-4 max-w-full sm:w-64 sm:h-64">
-            <p class="responsive-text-small">No scholarship applications yet.</p>
-          </div>
-        @endforelse
-      </div>
     </div>
 
     {{-- LOGOUT --}}
