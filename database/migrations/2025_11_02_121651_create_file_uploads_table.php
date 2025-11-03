@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('school_id_back');
             $table->string('cedula');
             $table->string('breakdown_of_expenses');
+            $table->enum('progress', ['Under Review', 'Approved', 'Rejected', 'Requires Revision'])->default('Under Review');
             $table->timestamps();
         });
     }

@@ -52,4 +52,9 @@ class User extends Authenticatable
             'birthday' => 'date',
         ];
     }
+
+    public function fileUploads()
+    {
+        return $this->hasMany(FileUpload::class);
+    }
 }
