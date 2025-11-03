@@ -6,9 +6,16 @@
   <div class="w-[90%] lg:w-3/4 ">
 
     <div class="flex items-start mb-4">
-      <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
+      <a href="{{ route('scholarship.show', ['id' => $scholarship->id]) }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
         ← Back
       </a>
+    </div>
+
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-md">
+      <p class="responsive-text-small">
+        ⚠️ <strong>Upload Reminder:</strong> Please upload only <strong>clear and properly scanned</strong> documents. 
+        Accepted file types are <strong>JPG, JPEG, PNG, or PDF</strong> and the maximum file size is <strong>2MB</strong>.
+      </p>
     </div>
 
     <h1 class="font-semibold mb-6 responsive-text-xl text-center">
@@ -72,4 +79,8 @@
   </div>
 </div>
 
+@endsection
+
+@section('scripts')
+  @vite(['resources/js/pages/upload.js'])
 @endsection

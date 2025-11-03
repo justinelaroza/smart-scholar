@@ -5,11 +5,19 @@
 <div class="flex flex-col justify-center items-center my-8 md:my-20">
 
   <div class="w-[90%] lg:w-3/4">
-
+    
     <div class="flex items-start mb-4">
       <a href="{{ route('scholarship.show', ['id' => $scholarship->id]) }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">
         ← Back
       </a>
+    </div>
+
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-md">
+      <p class="responsive-text-small">
+        ⚠️ <strong>Important Notice:</strong> You are only allowed to fill out this General Intake Sheet <strong>once</strong>.
+        Please review all information carefully before submitting. If a particular field or detail does not apply to you,
+        kindly enter <strong>N/A</strong> instead of leaving it blank.
+      </p>
     </div>
     
     <h1 class="responsive-text-xl font-bold text-center mb-3">General Intake Sheet</h1>
@@ -281,7 +289,7 @@
 
       <!-- Submit -->
       <div class="mt-10 text-right">
-        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 responsive-text-small cursor-pointer inline-block">Next</button>
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 responsive-text-small cursor-pointer inline-block">Submit</button>
       </div>
     </form>
   </div>

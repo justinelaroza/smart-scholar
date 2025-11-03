@@ -10,8 +10,6 @@ use App\Models\FamilyMember;
 use App\Models\FileUpload;
 use Illuminate\Support\Facades\Auth;
 
-use function Pest\Laravel\get;
-
 class ScholarshipController extends Controller
 {
     public function index(Request $request)
@@ -44,12 +42,33 @@ class ScholarshipController extends Controller
     {
         $scholarship = Scholarship::withCount('generalInfos')->findOrFail($id);
         
-        return view('scholarships.show', compact('scholarship'));
+        $user = Auth::user();
+
+        $hasApplied = false;
+        $hasGeneralInfo = false;
+        if ($user) {
+            $hasApplied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $scholarship->id)->exists();
+            $hasGeneralInfo = GeneralInfo::where('user_id', $user->id)->exists();
+        }
+
+        return view('scholarships.show', compact('scholarship', 'hasApplied', 'hasGeneralInfo'));
     }
 
     public function create($id)
     {
         $scholarship = Scholarship::findOrFail($id);
+        $user = Auth::user();
+
+        $hasApplied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $id)->exists();
+
+        if ($hasApplied) {
+            return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'You have already applied for this scholarship.');
+        }
+
+        $hasGeneralInfo = GeneralInfo::where('user_id', $user->id)->exists();
+        if ($hasGeneralInfo) {
+            return redirect()->route('scholarship.upload', ['id' => $id]);
+        }
 
         return view('scholarships.create', compact('scholarship'));
     }
@@ -57,6 +76,19 @@ class ScholarshipController extends Controller
     public function upload($id)
     {
         $scholarship = Scholarship::findOrFail($id);
+        $user = Auth::user();
+
+        $hasGeneralInfo = GeneralInfo::where('user_id', $user->id)->exists();
+
+        if (!$hasGeneralInfo) {
+            return redirect()->route('scholarship.create', ['id' => $id])->with('error', 'Please fill out your general information first.');
+        }
+
+        $hasApplied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $id)->exists();
+
+        if ($hasApplied) {
+            return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'You already submitted your application files.');
+        }
 
         return view('scholarships.upload', compact('scholarship'));
     }

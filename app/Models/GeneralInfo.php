@@ -20,4 +20,9 @@ class GeneralInfo extends Model
     {
         return $this->belongsTo(Scholarship::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
