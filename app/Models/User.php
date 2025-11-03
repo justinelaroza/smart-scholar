@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(FileUpload::class);
     }
+
+    public function generalInfo()
+    {
+        return $this->hasOne(GeneralInfo::class);
+    }
+
+    public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
 }

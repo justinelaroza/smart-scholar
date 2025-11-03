@@ -10,4 +10,9 @@ class FamilyMember extends Model
         'user_id', 'last_name', 'first_name', 'middle_name', 'sex', 'birthdate',
         'civil_status', 'relationship', 'education', 'occupation', 'income'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
