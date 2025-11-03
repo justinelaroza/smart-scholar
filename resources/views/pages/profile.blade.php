@@ -108,12 +108,6 @@
         @endif
       </div>
 
-      <div>
-        <button id="supportBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-xs shadow-sm transition cursor-pointer">
-          Request Edit (Support Ticket)
-        </button>
-      </div>
-
     </div>
 
     {{-- SCHOLARSHIP APPLICATIONS --}}
@@ -204,10 +198,4 @@
 
 </section>
 
-@endsection
-
-@section('scripts')
-
-  @vite(['resources/js/pages/profile.js'])
-  
 @endsection
