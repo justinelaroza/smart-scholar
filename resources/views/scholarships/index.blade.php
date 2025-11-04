@@ -117,7 +117,6 @@
 
       </div>
 
-      <!-- Pagination -->
       <div class="mt-10 w-full [&>nav]:w-full [&>nav]:flex [&>nav]:justify-center">
         {{ $scholarships->appends(request()->query())->links() }}
       </div>
