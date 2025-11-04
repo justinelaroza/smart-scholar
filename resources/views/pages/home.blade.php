@@ -27,7 +27,7 @@
         Apply Scholarship
       </a>
       <a href="{{ route('register') }}" 
-        class="border border-white text-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg shadow-md transition responsive-text-xs text-center">
+        class="text-blue-600 bg-white hover:bg-white/80 px-6 py-3 rounded-lg shadow-md transition responsive-text-xs text-center">
         Register
       </a>
     </div>
@@ -83,23 +83,11 @@
   <div class="relative w-full max-w-[650px] h-auto aspect-[4/3] translate-x-[6%] sm:translate-x-[4%] md:translate-x-0">
     <div class="relative w-full max-w-[650px] h-auto aspect-[4/3]">
 
-      <img 
-        src="{{ asset('assets/images/municipality.jpg') }}" 
-        alt="Municipality" 
-        class="absolute bottom-0 left-0 w-[45%] sm:w-[48%] md:w-[50%] 2xl:w-[55%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[-8deg] z-10"
-      />
+      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Municipality" class="absolute bottom-0 left-0 w-[45%] sm:w-[48%] md:w-[50%] 2xl:w-[55%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[-8deg] z-10"/>
 
-      <img 
-        src="{{ asset('assets/images/municipality.jpg') }}" 
-        alt="Graduate" 
-        class="absolute bottom-0 left-[20%] sm:left-[22%] md:left-[25%] w-[47%] sm:w-[50%] md:w-[53%] 2xl:w-[58%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[0deg] z-20"
-      />
+      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Graduate" class="absolute bottom-0 left-[20%] sm:left-[22%] md:left-[25%] w-[47%] sm:w-[50%] md:w-[53%] 2xl:w-[58%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[0deg] z-20"/>
 
-      <img 
-        src="{{ asset('assets/images/municipality.jpg') }}" 
-        alt="Scholars" 
-        class="absolute bottom-0 left-[40%] sm:left-[42%] md:left-[45%] w-[49%] sm:w-[52%] md:w-[55%] 2xl:w-[60%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[8deg] z-30"
-      />
+      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Scholars" class="absolute bottom-0 left-[40%] sm:left-[42%] md:left-[45%] w-[49%] sm:w-[52%] md:w-[55%] 2xl:w-[60%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[8deg] z-30"/>
     </div>
   </div>
 

@@ -14,7 +14,7 @@
   <div class="flex md:justify-end lg:justify-center items-center gap-3">
 
     @guest
-      <a href="{{ route('login') }}" class="hidden md:inline-block text-white border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-[#282740] transition">
+      <a href="{{ route('login') }}" class="hidden md:inline-block bg-white text-[#282740] hover:bg-white/80 px-5 py-2 rounded-lg transition">
         Login
       </a>
     @endguest
