@@ -46,18 +46,25 @@ class ScholarshipController extends Controller
 
         $hasApplied = false;
         $hasGeneralInfo = false;
+        $isOpen = true;
+
         if ($user) {
             $hasApplied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $scholarship->id)->exists();
             $hasGeneralInfo = GeneralInfo::where('user_id', $user->id)->exists();
+            $isOpen = $scholarship->status === 'Open';
         }
 
-        return view('scholarships.show', compact('scholarship', 'hasApplied', 'hasGeneralInfo'));
+        return view('scholarships.show', compact('scholarship', 'hasApplied', 'hasGeneralInfo', 'isOpen'));
     }
 
     public function create($id)
     {
         $scholarship = Scholarship::findOrFail($id);
         $user = Auth::user();
+
+        if ($scholarship->status === 'Close' || now()->greaterThan($scholarship->submission_deadline)) {
+            return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'This scholarship is already closed.');
+        }
 
         $hasApplied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $id)->exists();
 
@@ -77,6 +84,10 @@ class ScholarshipController extends Controller
     {
         $scholarship = Scholarship::findOrFail($id);
         $user = Auth::user();
+
+        if ($scholarship->status === 'Close' || now()->greaterThan($scholarship->submission_deadline)) {
+            return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'This scholarship is already closed.');
+        }
 
         $hasGeneralInfo = GeneralInfo::where('user_id', $user->id)->exists();
 
