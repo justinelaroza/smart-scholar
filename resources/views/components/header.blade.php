@@ -21,9 +21,14 @@
     @endguest
 
     @auth
-      <a href="{{ route('profile') }}" class="hidden md:block">
-        <img src="{{ asset('assets/icons/profile-icon.png') }}" alt="Profile" class="h-12 cursor-pointer">
-      </a>
+      <a href="{{ route('profile') }}" 
+   class="hidden md:block relative group">
+  <div class="p-[3px] rounded-full bg-gradient-to-tr from-[#4f46e5] via-[#6366f1] to-[#a5b4fc] group-hover:from-[#818cf8] group-hover:to-[#c7d2fe] transition-all duration-500">
+    <img src="{{ asset('assets/images/ss-logo.png') }}" 
+         alt="Profile" 
+         class="h-14 w-14 bg-white rounded-full shadow-md cursor-pointer" />
+  </div>
+</a>
     @endauth
 
     <button id="menu-btn" class="block md:hidden">

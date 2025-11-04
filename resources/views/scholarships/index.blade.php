@@ -7,7 +7,7 @@
     <div class="flex flex-col justify-center items-center gap-5 md:gap-8 w-[90%] lg:w-3/4">
 
       <div class="flex flex-col justify-center gap-2 md:gap-4 w-full">
-        <p class="responsive-text-xl font-bold">Find <span class="text-blue-600">Scholarships</span> by Keyword, Education Level, or Status</p>
+        <p class="responsive-text-xl font-bold">Find <span class="text-blue-800">Scholarships</span> by Keyword, Education Level, or Status</p>
         <p class="responsive-text-medium" >Explore various scholarship opportunities exclusively offered by the Municipality of Padre Garcia, Batangas. Browse the categories below to find the best program that fits your educational goals.</p>
       </div>
 
