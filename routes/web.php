@@ -24,6 +24,8 @@ Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->n
 
 //Forgot-Pass
 Route::get('/forgot-pass', [ForgotPasswordController::class, 'show'])->name('forgot-pass');
+Route::post('/forgot-pass', [ForgotPasswordController::class, 'update'])->name('forgot-pass.update')->middleware('throttle:3,1');
+Route::post('/forgot-pass/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('forgot-pass.verifyOtp')->middleware('throttle:10,1');
 
 /* Public pages */
 
@@ -37,6 +39,9 @@ Route::middleware('auth')->group(function () {
   Route::post('/scholarship/{id}/create', [ScholarshipController::class, 'storeGeneralInfo'])->name('scholarship.generalinfo');
   Route::get('/scholarship/{id}/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
   Route::post('/scholarship/{id}/upload', [ScholarshipController::class, 'storeFileUpload'])->name('scholarship.fileupload');
+  Route::get('/scholarship/{id}/progress', [ScholarshipController::class, 'progressReport'])->name('scholarship.progress');
+  Route::patch('/fileupload/{id}/resubmit/', [ScholarshipController::class, 'resubmit'])->name('fileupload.resubmit');
+  Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 });
 
 Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
@@ -51,6 +56,6 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 Route::get('/support', [SupportController::class, 'show'])->name('support');
 
 //Profile
-Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+
 
 

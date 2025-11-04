@@ -60,7 +60,7 @@
                   </span>
                 </td>
                 <td class="px-6 py-4 text-center">
-                  <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-xs">View</a>
+                  <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-xs">View</a>
                 </td>
               </tr>
             @empty
@@ -92,7 +92,7 @@
               </span>
             </p>
             <div class="mt-3 flex justify-end">
-              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-small">View</a>
+              <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg responsive-text-small">View</a>
             </div>
           </div>
         @empty

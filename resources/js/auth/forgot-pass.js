@@ -2,19 +2,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const wrapper = document.getElementById('wrapper');
 
-  const form = document.getElementById('registerForm');
-  const pendingIdHolder = document.getElementById('pendingIdHolder');
-  const continueBtn = document.getElementById('continueBtn');
+  const form = document.getElementById('forgotForm');
+  const continueBtn = document.getElementById('continue-btn');
 
   const verifyForm = document.getElementById('verifyForm');
   const otpInputs = document.querySelectorAll('.otp-input');
-  const accountCodeText = document.getElementById('accountCodeText');
 
   const verifyBtn = document.getElementById('verify-btn');
   const backBtn = document.getElementById('back-btn');
 
-  // STEP 1
-  
+  // STEP 1: Send OTP
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     continueBtn.disabled = true;
@@ -30,11 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (response.status === 422) {
       const errorData = await response.json();
-
       const messages = Object.values(errorData.errors)
-      .flat()
-      .map(msg => `${msg}`)
-      .join('<br>');
+        .flat()
+        .map(msg => `${msg}`)
+        .join('<br>');
 
       Swal.fire({
         icon: 'error',
@@ -87,8 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Step1 response:', data);
 
     if (data.status === 'ok') {
-      if (data.pending_id) pendingIdHolder.value = data.pending_id;
-        
       Swal.fire({
         icon: 'success',
         title: 'OTP Sent!',
@@ -104,14 +98,12 @@ document.addEventListener('DOMContentLoaded', function () {
         text: data.message || 'Error during OTP sending.',
         confirmButtonColor: '#2563eb'
       });
-
     }
 
     continueBtn.disabled = false;
   });
 
-  // STEP 2
-
+  // STEP 2: OTP Verification
   otpInputs.forEach((input, index) => {
     input.addEventListener("input", () => {
       if (input.value.length === 1 && index < 5) {
@@ -133,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = verifyForm.querySelector('input[name="_token"]').value;
     const formData = new FormData(verifyForm);
 
-    const otpInputs = verifyForm.querySelectorAll('.otp-input');
     let otpCode = '';
     otpInputs.forEach(inp => otpCode += (inp.value || '').trim());
     formData.append('otp_code', otpCode);
@@ -194,11 +185,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (data.status === 'ok') {
       Swal.fire({
         icon: 'success',
-        title: 'Verification Successful!',
-        text: 'Your account has been successfully verified.',
+        title: 'Password Updated!',
+        text: 'Your password has been successfully reset.',
         confirmButtonColor: '#2563eb'
       }).then(() => {
-        accountCodeText.textContent = data.account_code || '--';
         wrapper.style.transform = 'translateX(-66.666%)';
       });
     } else {
@@ -213,9 +203,9 @@ document.addEventListener('DOMContentLoaded', function () {
     verifyBtn.disabled = false;
   });
 
-  // Back
+  // BACK BUTTON
   backBtn.addEventListener('click', function () {
     wrapper.style.transform = 'translateX(0%)';
   });
-  
+
 });

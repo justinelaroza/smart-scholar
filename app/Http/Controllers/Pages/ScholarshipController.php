@@ -9,6 +9,7 @@ use App\Models\GeneralInfo;
 use App\Models\FamilyMember;
 use App\Models\FileUpload;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ScholarshipController extends Controller
 {
@@ -102,6 +103,62 @@ class ScholarshipController extends Controller
         }
 
         return view('scholarships.upload', compact('scholarship'));
+    }
+
+    public function progressReport($id)
+    {
+        $user = Auth::user();
+        $scholarship = Scholarship::findOrFail($id);
+
+        $fileUpload = FileUpload::where('user_id', $user->id)->where('scholarship_id', $id)->first();
+
+        if (!$fileUpload) {
+            return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'You have not submitted any documents for this scholarship yet.');
+        }
+
+        return view('scholarships.progress', compact('scholarship', 'fileUpload'));
+    }
+
+    public function resubmit(Request $request, $id)
+    {
+        $fileUpload = FileUpload::findOrFail($id);
+
+        // Define all document fields
+        $documents = [
+            'school_registration_form',
+            'barangay_clearance',
+            'certificate_of_indigency',
+            'school_id_front',
+            'school_id_back',
+            'cedula',
+            'breakdown_of_expenses',
+        ];
+
+        // Loop through each document field
+        foreach ($documents as $field) {
+            if ($request->hasFile($field)) {
+                // Delete old file
+                Storage::delete('public/' . $fileUpload->$field);
+
+                // Store new file
+                $path = $request->file($field)->store('uploads', 'public');
+
+                // Update file field
+                $fileUpload->$field = $path;
+
+                // Reset corresponding remark to "No Remarks"
+                $remarkField = 'remarks_' . $field;
+                $fileUpload->$remarkField = 'No Remarks';
+            }
+        }
+
+        // Reset status to "Under Review"
+        $fileUpload->progress = 'Under Review';
+
+        // Save changes
+        $fileUpload->save();
+
+        return back()->with('success', 'Documents successfully resubmitted and are now under review.');
     }
 
     public function storeGeneralInfo(Request $request, $id)
