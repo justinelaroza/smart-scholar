@@ -8,49 +8,69 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Show login form (GET /login)
-     */
     public function show()
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle login submit (POST /login)
-     */
     public function authenticate(Request $request)
     {
-        // 1. Validate inputs from the form
-        $credentials = $request->validate([
-            'account_code' => ['required', 'string'], 
-            'password' => ['required', 'string'],
-        ]);
+        // Validate the incoming login data
+        $credentials = $this->validateLogin($request);
 
-        // 2. Attempt login using 'account_code' and 'password'
-        if (Auth::attempt(
-            [
-                'account_code' => $credentials['account_code'],  // <- Use 'account_code' here
-                'password' => $credentials['password'],
-            ],
-            $request->boolean('remember')
-        )) {
-            // 3. Protect against session fixation
+        // Attempt to log the user in
+        if ($this->attemptLogin($credentials, $request)) {
             $request->session()->regenerate();
 
-            // 4. Send them to the intended page or scholarship page
-            return redirect()->intended(route('scholarship'));
+            return $this->respondSuccess($request);
         }
 
-        // 5. Failed login -> send back with error, keep the name field filled
-        return back()->withErrors([
-            'account_code' => 'Invalid Account ID or password.',
-        ])->onlyInput('account_code');  // <- Keep 'account_code' input filled on error
+        // If login fails
+        return $this->respondFailure($request);
     }
 
-    /**
-     * Logout (optional)
-     */
+    protected function validateLogin(Request $request): array
+    {
+        return $request->validate([
+            'account_code' => 'required|string|max:255',
+            'password'     => 'required|string|max:255',
+        ]);
+    }
+
+    protected function attemptLogin(array $credentials, Request $request): bool
+    {
+        return Auth::attempt([
+            'account_code' => $credentials['account_code'],
+            'password'     => $credentials['password'],
+        ], $request->boolean('remember'));
+    }
+
+    protected function respondSuccess(Request $request)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status'  => 'ok',
+                'message' => 'Login successful.',
+            ]);
+        }
+
+        return redirect()->intended(route('home'));
+    }
+
+    protected function respondFailure(Request $request)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Invalid Account ID or password.',
+            ], 401);
+        }
+
+        return back()
+            ->withErrors(['invalid' => 'Invalid Account ID or password.'])
+            ->onlyInput('account_code');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

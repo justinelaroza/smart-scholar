@@ -1,10 +1,8 @@
 import './bootstrap';
-import './components/navbar';
-import './pages/home';
-import './utils/general';
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
+import Swal from 'sweetalert2'
+window.Swal = Swal;
 
 flatpickr(".datepicker", {
   altInput: true,

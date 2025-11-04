@@ -13,66 +13,32 @@
     <div>
 
       {{-- LOGIN FORM --}}
-      <form class="flex flex-col justify-center items-center"
-            method="POST"
-            action="{{ route('login.attempt') }}">
+      <form id="loginForm" class="flex flex-col justify-center items-center" method="POST" action="{{ route('login.authenticate') }}">
         @csrf
 
         <div class="flex flex-col w-full mb-2 gap-2 md:gap-3 md:mb-3">
-          {{-- Account Code / Username --}}
-          <input
-              type="text"
-              name="account_code"
-              placeholder="Account ID"
-              class="login-input"
-              value="{{ old('account_code') }}"
-              required
-              autofocus
-          >
-          @error('account_code')
-              <div class="text-red-600 text-xs md:text-sm">{{ $message }}</div>
-          @enderror
-
-          {{-- Password --}}
-          <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              class="login-input"
-              required
-          >
-          @error('password')
-              <div class="text-red-600 text-xs md:text-sm">{{ $message }}</div>
-          @enderror
+          <input type="text" name="account_code" placeholder="Account ID" class="login-input" value="{{ old('account_code') }}" required autofocus>
+          <input type="password" name="password" placeholder="Password" class="login-input" required>
         </div>
 
         <div class="flex justify-between items-center w-full mb-3 md:mb-5">
           <div class="flex justify-center items-center gap-1">
-            <input
-                id="remember"
-                type="checkbox"
-                name="remember"
-                class="border cursor-pointer"
-                {{ old('remember') ? 'checked' : '' }}
-            >
+            <input id="remember" type="checkbox" name="remember" class="border cursor-pointer" {{ old('remember') ? 'checked' : '' }}>
             <label for="remember" class="text-[.6rem] md:text-base">Remember me</label>
           </div>
-
           <a href="{{ route('forgot-pass') }}" class="text-[.6rem] text-blue-600 md:text-base">Forgot Password?</a>
         </div>
 
         <div class="w-full flex flex-col items-center justify-center gap-3 md:gap-4">
-          <button
-              type="submit"
-              class="text-sm md:text-base md:rounded-md bg-blue-500 text-white w-2/3 md:w-3/5 py-2 md:py-3 rounded-sm cursor-pointer">
+          <button id="loginBtn" type="submit" class="text-sm md:text-base md:rounded-md bg-blue-500 text-white w-2/3 md:w-3/5 py-2 md:py-3 rounded-sm cursor-pointer">
             Login
           </button>
+          
           <p class="text-sm md:text-base">
             Don't have an account?
             <a href="{{ route('register') }}" class="text-blue-700">Register</a>
           </p>
         </div>
-
       </form>
 
     </div>
@@ -80,5 +46,11 @@
   </div>
   
 </div>
+
+@endsection
+
+@section('scripts')
+
+  @vite(['resources/js/auth/login.js'])
 
 @endsection

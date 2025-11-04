@@ -18,8 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'gender',
+        'birthday',
+        'full_address',
         'email',
+        'phone_number',
         'password',
         'account_code',
     ];
@@ -44,6 +49,22 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birthday' => 'date',
         ];
+    }
+
+    public function fileUploads()
+    {
+        return $this->hasMany(FileUpload::class);
+    }
+
+    public function generalInfo()
+    {
+        return $this->hasOne(GeneralInfo::class);
+    }
+
+    public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
     }
 }

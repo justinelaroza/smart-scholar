@@ -1,6 +1,7 @@
 @extends('layouts.auth')
 
 @section('maincontent')
+
 <div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')"
      class="bg-cover bg-no-repeat bg-center min-h-screen flex items-center justify-center">
 
@@ -14,14 +15,8 @@
     </div>
 
     <div class="overflow-hidden w-xs rounded-br-xl rounded-bl-xl md:rounded-bl-none md:w-xl md:rounded-tr-xl">
-      @php
-        $currentStep = $step ?? 'form';
-        $translate =
-          $currentStep === 'otp'  ? '-33.333%' :
-          ($currentStep === 'done' ? '-66.666%' : '0%');
-      @endphp
 
-      <div id="wrapper" class="flex w-[300%] transition-transform duration-700 ease-in-out" style="transform: translateX({{ $translate }}); will-change: transform;">
+      <div id="wrapper" class="flex w-[300%] transition-transform duration-700 ease-in-out" >
 
         {{-- Panel 1: Registration --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
@@ -31,23 +26,23 @@
               <p class="text-sm md:text-base">Already have an account? <a href="{{ route('login') }}" class="text-blue-500">Log in</a></p>
             </div>
 
-            <form id="registerForm" method="POST" action="{{ route('register.step1') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
+            <form id="registerForm" method="POST" action="{{ route('register.store') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
               @csrf
               <div class="grid grid-cols-2 gap-2 md:gap-3">
                 <input type="text" name="first_name" placeholder="First Name" class="register-input" value="{{ old('first_name') }}" required>
                 <input type="text" name="last_name" placeholder="Last Name" class="register-input" value="{{ old('last_name') }}" required>
 
-                <select name="gender" class="register-input cursor-pointer">
+                <select name="gender" class="register-input cursor-pointer" required>
                   <option value="">Select Gender</option>
-                  <option value="male"   {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
-                  <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="Male"   {{ old('gender') === 'Male' ? 'selected' : '' }}>Male</option>
+                  <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
                 </select>
 
-                <input type="date" name="birthday" class="datepicker register-input" placeholder="Birthday" value="{{ old('birthday') }}">
+                <input type="date" name="birthday" class="datepicker register-input" placeholder="Birthday" value="{{ old('birthday') }}" required>
               </div>
 
-              <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}">
-              <input type="email" name="email" placeholder="Email Address" class="register-input" value="{{ old('email') }}">
+              <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}" required>
+              <input type="email" name="email" placeholder="Email Address" class="register-input" value="{{ old('email') }}" required>
               <input type="text" name="phone" placeholder="Phone Number" class="register-input" value="{{ old('phone') }}" required>
 
               <div class="grid grid-cols-2 gap-2 md:gap-3">
@@ -76,7 +71,9 @@
 
         {{-- Panel 2: OTP --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
-          <div class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+          <form id="verifyForm" action="{{ route('register.verifyOtp') }}" method="POST" class="gap-2 md:gap-3 w-full h-full flex flex-col justify-center items-center text-nowrap">
+            @csrf
+
             <div class="flex flex-col text-center gap-1 md:gap-5">
               <p class="text-lg md:text-3xl">OTP VERIFICATION</p>
               <div>
@@ -94,21 +91,21 @@
             </div>
 
             <div class="w-3xs h-10 gap-1 mb-4 md:w-sm md:h-16 flex md:gap-2 md:mb-8">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
-              <input type="text" maxlength="1" class="otp-input">
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
+              <input type="text" maxlength="1" class="otp-input border text-center rounded" required>
             </div>
 
-            <input type="hidden" id="pendingIdHolder" value="">
+            <input type="hidden" name="pending_id" id="pendingIdHolder" value="">
 
             <div class="w-3xs gap-1 md:w-sm h-[15%] flex flex-col md:gap-2">
-              <button id="verify-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Verify</button>
-              <button id="back-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-blue-500">Back</button>
+              <button type="submit" id="verify-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Verify</button>
+              <button type="button" id="back-btn" class="cursor-pointer border h-1/2 rounded-xl text-sm md:text-base md:rounded-2xl text-blue-500">Back</button>
             </div>
-          </div>
+          </form>
         </div>
 
         {{-- Panel 3: Done --}}
@@ -125,7 +122,7 @@
               <p class="text-[.5rem] md:text-sm">Your account has been verified successfully</p>
             </div>
             <div class="w-3xs md:w-sm h-[7.5%] flex flex-col">
-              <button id="done-btn" class="cursor-pointer border h-full rounded-xl text-sm md:text-base md:rounded-2xl text-white bg-blue-500">Done</button>
+              <a href="{{ route('login') }}" class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center responsive-text-small">Done</a>
             </div>
           </div>
         </div>
@@ -134,114 +131,11 @@
     </div>
   </div>
 </div>
+
 @endsection
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('registerForm');
-  const wrapper = document.getElementById('wrapper');
-  const pendingIdHolder = document.getElementById('pendingIdHolder');
-  const verifyBtn = document.getElementById('verify-btn');
-  const backBtn = document.getElementById('back-btn');
-  const accountCodeText = document.getElementById('accountCodeText');
-  const doneBtn = document.getElementById('done-btn');
-  const continueBtn = document.getElementById('continueBtn');
+@section('scripts')
 
-  const otpInputs = document.querySelectorAll('.otp-input');
-  otpInputs.forEach((input, idx) => {
-    input.addEventListener('input', function () {
-      if (this.value.length === 1 && idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
-      if (this.value.length === 0 && idx > 0) otpInputs[idx - 1].focus();
-    });
-  });
-
-  // STEP 1
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    continueBtn.disabled = true;
-
-    const formData = new FormData(form);
-    const csrfToken = form.querySelector('input[name="_token"]').value;
-
-    const response = await fetch(form.action, {
-      method: 'POST',
-      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      body: formData
-    });
-
-    if (response.status === 422) {
-      const errorData = await response.json();
-      alert('Please check your inputs:\n' + JSON.stringify(errorData.errors, null, 2));
-      continueBtn.disabled = false;
-      return;
-    }
-
-    if (!response.ok) {
-      const text = await response.text();
-      alert('Server error during registration.\nStatus: ' + response.status + '\nBody: ' + text);
-      continueBtn.disabled = false;
-      return;
-    }
-
-    const data = await response.json();
-    console.log('Step1 response:', data);
-
-    if (data.status === 'ok') {
-      if (data.pending_id) pendingIdHolder.value = data.pending_id;
-        wrapper.style.transform = 'translateX(-33.333%)';
-      } else {
-        alert(data.message || 'Error during OTP sending.');
-    }
-
-    continueBtn.disabled = false;
-  });
-
-  // STEP 2
-  verifyBtn.addEventListener('click', async function () {
-    const csrfToken = form.querySelector('input[name="_token"]').value;
-
-    let otpCode = '';
-    otpInputs.forEach(inp => otpCode += (inp.value || '').trim());
-
-    const verifyData = new FormData();
-    verifyData.append('pending_id', pendingIdHolder.value);
-    verifyData.append('otp_code', otpCode);
-
-    const response = await fetch("{{ route('register.verifyOtp') }}", {
-      method: 'POST',
-      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      body: verifyData
-    });
-
-    if (response.status === 422) {
-      const err = await response.json();
-      alert(err.message || 'OTP invalid or expired.');
-      return;
-    }
-
-    if (!response.ok) {
-      const text = await response.text();
-      alert('Server error during OTP check.\nStatus: ' + response.status + '\nBody: ' + text);
-      return;
-    }
-
-    const data = await response.json();
-    if (data.status === 'ok') {
-      accountCodeText.textContent = data.account_code || '--';
-      wrapper.style.transform = 'translateX(-66.666%)';
-    } else {
-      alert(data.message || 'OTP invalid or expired.');
-    }
-  });
-
-  // Back
-  backBtn.addEventListener('click', function () {
-    wrapper.style.transform = 'translateX(0%)';
-  });
-
-  // Done
-  doneBtn.addEventListener('click', function () {
-    window.location.href = "{{ route('login') }}";
-  });
-});
-</script>
+  @vite(['resources/js/auth/register.js'])
+  
+@endsection

@@ -8,34 +8,54 @@ use App\Http\Controllers\Pages\HomeController;
 use App\Http\Controllers\Pages\ScholarshipController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
-use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\Pages\ProfileController;
 
-// Public pages
-Route::get('/', [HomeController::class, 'index'])->name('home');
+/* Authentication */
+
+//Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate')->middleware('throttle:5,1');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+//Register
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store')->middleware('throttle:3,1');
+Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])->name('register.verifyOtp')->middleware('throttle:10,1');
+
+//Forgot-Pass
 Route::get('/forgot-pass', [ForgotPasswordController::class, 'show'])->name('forgot-pass');
-Route::get('/about', [AboutController::class, 'show'])->name('about');
-Route::get('/support', [SupportController::class, 'show'])->name('support');
+Route::post('/forgot-pass', [ForgotPasswordController::class, 'update'])->name('forgot-pass.update')->middleware('throttle:3,1');
+Route::post('/forgot-pass/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('forgot-pass.verifyOtp')->middleware('throttle:10,1');
 
-Route::get('/facebook-feed-ajax', [FacebookController::class, 'feedAjax']);
+/* Public pages */
 
-// Scholarship routes
+//Home
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/facebook-feed-ajax', [HomeController::class, 'feedAjax']);
+
+//Scholarship
 Route::middleware('auth')->group(function () {
-    Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
-    Route::get('/scholarship/show', [ScholarshipController::class, 'show'])->name('scholarship.show'); 
-    Route::get('/scholarship/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
-    Route::get('/scholardhip/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+  Route::get('/scholarship/{id}/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
+  Route::post('/scholarship/{id}/create', [ScholarshipController::class, 'storeGeneralInfo'])->name('scholarship.generalinfo');
+  Route::get('/scholarship/{id}/upload', [ScholarshipController::class, 'upload'])->name('scholarship.upload');
+  Route::post('/scholarship/{id}/upload', [ScholarshipController::class, 'storeFileUpload'])->name('scholarship.fileupload');
+  Route::get('/scholarship/{id}/progress', [ScholarshipController::class, 'progressReport'])->name('scholarship.progress');
+  Route::patch('/fileupload/{id}/resubmit/', [ScholarshipController::class, 'resubmit'])->name('fileupload.resubmit');
+  Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 });
 
-Route::post('/register/step1', [RegisterController::class, 'storeStep1'])
-    ->name('register.step1')
-    ->middleware('throttle:3,1');
+Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
+Route::get('/scholarship/{id}', [ScholarshipController::class, 'show'])->name('scholarship.show');
 
-Route::post('/register/verify-otp', [RegisterController::class, 'verifyOtp'])
-    ->name('register.verifyOtp')
-    ->middleware('throttle:10,1');
 
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.attempt');
 
-// (Later we'll add: Route::post('/register/verify-otp', ...) for Verify button)
+//About
+Route::get('/about', [AboutController::class, 'show'])->name('about');
+
+//Support
+Route::get('/support', [SupportController::class, 'show'])->name('support');
+
+//Profile
+
+
+
