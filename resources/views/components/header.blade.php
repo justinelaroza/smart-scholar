@@ -14,21 +14,17 @@
   <div class="flex md:justify-end lg:justify-center items-center gap-3">
 
     @guest
-      <a href="{{ route('login') }}" 
-        class="hidden md:inline-block text-white border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-[#282740] transition">
+      <a href="{{ route('login') }}" class="hidden md:inline-block text-white border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-[#282740] transition">
         Login
       </a>
     @endguest
 
     @auth
-      <a href="{{ route('profile') }}" 
-   class="hidden md:block relative group">
-  <div class="p-[3px] rounded-full bg-gradient-to-tr from-[#4f46e5] via-[#6366f1] to-[#a5b4fc] group-hover:from-[#818cf8] group-hover:to-[#c7d2fe] transition-all duration-500">
-    <img src="{{ asset('assets/images/ss-logo.png') }}" 
-         alt="Profile" 
-         class="h-14 w-14 bg-white rounded-full shadow-md cursor-pointer" />
-  </div>
-</a>
+      <a href="{{ route('profile') }}" class="hidden md:block relative group">
+        <div class="p-[3px] rounded-full bg-gradient-to-tr from-[#4f46e5] via-[#6366f1] to-[#a5b4fc] group-hover:from-[#818cf8] group-hover:to-[#c7d2fe] transition-all duration-500">
+          <img src="{{ asset('assets/images/ss-logo.png') }}" alt="Profile" class="h-14 w-14 bg-white rounded-full shadow-md cursor-pointer" />
+        </div>
+      </a>
     @endauth
 
     <button id="menu-btn" class="block md:hidden">

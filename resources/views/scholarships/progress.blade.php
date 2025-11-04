@@ -42,7 +42,9 @@
                 <th class="px-4 py-3 text-left font-semibold text-gray-700 responsive-text-xs w-1/3">Current File</th>
 
                 @if ($fileUpload->progress === 'Requires Revision' || $fileUpload->progress === 'Approved' || $fileUpload->progress === 'Rejected')
+
                   <th class="px-4 py-3 text-left font-semibold text-gray-700 responsive-text-xs w-1/3">Remarks / Action</th>
+                  
                 @endif
               </tr>
             </thead>
@@ -61,55 +63,67 @@
               @endphp
 
               @foreach ($documents as $field => $label)
+
                 @php
                   $remarkField = 'remarks_' . $field;
                   $remark = $fileUpload->$remarkField;
                 @endphp
 
                 <tr class="border-t hover:bg-gray-50 transition">
-                  {{-- Document name --}}
+
                   <td class="px-4 py-3 responsive-text-xs text-gray-800 font-medium">{{ $label }}</td>
 
-                  {{-- File view --}}
                   <td class="px-4 py-3">
                     <a href="{{ asset('storage/' . $fileUpload->$field) }}" target="_blank" class="text-blue-600 hover:underline responsive-text-xs">
                       View File
                     </a>
                   </td>
 
-                  {{-- Remarks or upload input --}}
                   @if ($fileUpload->progress === 'Requires Revision')
+
                     <td class="px-4 py-3">
                       @if ($remark !== 'No Remarks')
                         <div class="flex flex-col gap-2">
                           <span class="text-red-500 responsive-text-xs font-medium">{{ $remark }}</span>
                           <input type="file" name="{{ $field }}" accept=".pdf,.jpg,.png,.jpeg" class="border border-gray-300 rounded px-2 py-1 text-xs w-full sm:w-3/4" required>
                         </div>
+
                       @else
+
                         <span class="text-green-600 responsive-text-xs font-medium">✅ Done</span>
+
                       @endif
                     </td>
+
                   @elseif(in_array($fileUpload->progress, ['Approved', 'Rejected']))
+
                     <td class="px-4 py-3">
                       <span class="responsive-text-xs font-medium {{ $remark !== 'No Remarks' ? 'text-gray-700' : 'text-green-600' }}">
                         {{ $remark }}
                       </span>
                     </td>
+
                   @endif
                 </tr>
+
               @endforeach
+
             </tbody>
           </table>
         </div>
 
         @if ($fileUpload->progress === 'Requires Revision')
+
           <div class="mt-8 text-center">
             <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg responsive-text-small transition">
               Resubmit All
             </button>
           </div>
+
         @endif
+
       </form>
+
     </div>
   </div>
 </div>

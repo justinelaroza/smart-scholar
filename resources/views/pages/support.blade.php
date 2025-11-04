@@ -5,13 +5,11 @@
 <section class="flex flex-col items-center justify-center my-8 md:my-20">
   <div class="w-[90%] lg:w-3/4 flex flex-col gap-6 md:gap-10">
 
-    <!-- Title -->
     <div class="text-center">
       <h1 class="text-2xl md:text-4xl font-bold text-blue-800 mb-2">Support & Frequently Asked Questions</h1>
       <p class="text-gray-600 responsive-text-small">Everything you need to know about SmartScholar</p>
     </div>
 
-    <!-- FAQ Section -->
     <div class="bg-white rounded-xl shadow-md p-6 md:p-10 flex flex-col gap-4 border-t-4 border-blue-600">
       @php
         $faqs = [
@@ -55,7 +53,6 @@
       </div>
     </div>
 
-    <!-- Municipality Section -->
     <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-center bg-white p-6 rounded-xl shadow-inner mt-6 border-t-4 border-blue-600">
       <img src="{{ asset('assets/images/ss-logo.png') }}" alt="Municipality of Padre Garcia" class="w-full md:w-1/2 rounded-lg shadow-md">
       <div class="text-gray-700 flex flex-col gap-3">
