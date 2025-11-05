@@ -5,9 +5,9 @@
 <section class="relative w-full flex items-center justify-center bg-gray-200 min-h-[350px] md:min-h-[700px] lg:min-h-[calc(100vh-80px)] overflow-hidden">
 
   <div id="wrapper-home" class="absolute inset-0 flex transition-transform duration-700 ease-in-out w-[300%] h-full">
-    <img src="{{ asset('assets/images/parish.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 1">
-    <img src="{{ asset('assets/images/municipality.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 2">
-    <img src="{{ asset('assets/images/cattle-trading.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 3">
+    <img src="{{ asset('assets/images/alay-lakad-scholars.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 1">
+    <img src="{{ asset('assets/images/alay-lakad.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 2">
+    <img src="{{ asset('assets/images/scholars.jpg') }}" class="w-1/3 h-full object-cover" alt="Banner 3">
   </div>
 
   <div class="absolute inset-0 bg-black/40"></div>
@@ -83,11 +83,12 @@
   <div class="relative w-full max-w-[650px] h-auto aspect-[4/3] translate-x-[6%] sm:translate-x-[4%] md:translate-x-0">
     <div class="relative w-full max-w-[650px] h-auto aspect-[4/3]">
 
-      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Municipality" class="absolute bottom-0 left-0 w-[45%] sm:w-[48%] md:w-[50%] 2xl:w-[55%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[-8deg] z-10"/>
+      <img src="{{ asset('assets/images/tesda-scholars.jpg') }}" alt="Tesda Scholars" class="absolute bottom-0 left-0 w-[45%] sm:w-[48%] md:w-[50%] 2xl:w-[55%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[-8deg] z-10"/>
 
-      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Graduate" class="absolute bottom-0 left-[20%] sm:left-[22%] md:left-[25%] w-[47%] sm:w-[50%] md:w-[53%] 2xl:w-[58%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[0deg] z-20"/>
+      <img src="{{ asset('assets/images/volunteer-workers.jpg') }}" alt="Atletang Garicano" class="absolute bottom-0 left-[20%] sm:left-[22%] md:left-[25%] w-[47%] sm:w-[50%] md:w-[53%] 2xl:w-[58%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[0deg] z-20"/>
 
-      <img src="{{ asset('assets/images/municipality.jpg') }}" alt="Scholars" class="absolute bottom-0 left-[40%] sm:left-[42%] md:left-[45%] w-[49%] sm:w-[52%] md:w-[55%] 2xl:w-[60%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[8deg] z-30"/>
+      <img src="{{ asset('assets/images/atletang-garciano.jpg') }}" alt="Volunteer Workers" class="absolute bottom-0 left-[40%] sm:left-[42%] md:left-[45%] w-[49%] sm:w-[52%] md:w-[55%] 2xl:w-[60%] aspect-[3/4] object-cover rounded-3xl shadow-2xl rotate-[8deg] z-30"/>
+   
     </div>
   </div>
 

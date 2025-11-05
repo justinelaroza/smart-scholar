@@ -50,48 +50,58 @@
           </span>
         </div>
 
-        <p class="mb-5 responsive-text-xs">Currently have: {{ $scholarship->general_infos_count }} participants</p>
+        <p class="mb-5 responsive-text-xs">Currently have: {{ $scholarship->file_uploads_count }} participants</p>
 
-        @if($isOpen)
+        @auth
+          @if($isOpen)
 
-          @if ($hasApplied)
+            @if ($hasApplied)
 
-            <a href="#" 
-              class="block w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded mb-2 responsive-text-small text-center font-medium shadow-md">
-              View Progress
-            </a>
-
-          @else
-
-            @if($hasGeneralInfo)
-
-              <a href="{{ route('scholarship.upload', ['id' => $scholarship->id]) }}" 
-                class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center font-medium shadow-md">
-                Apply Now
+              <a href="{{ route('scholarship.progress', ['id' => $scholarship->id]) }}" 
+                class="block w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded mb-2 responsive-text-small text-center font-medium shadow-md">
+                View Progress
               </a>
 
             @else
 
-              <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" 
-                class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center font-medium shadow-md">
-                Apply Now
-              </a>
+              @if($hasGeneralInfo)
+
+                <a href="{{ route('scholarship.upload', ['id' => $scholarship->id]) }}" 
+                  class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center font-medium shadow-md">
+                  Apply Now
+                </a>
+
+              @else
+
+                <a href="{{ route('scholarship.create', ['id' => $scholarship->id]) }}" 
+                  class="block w-full bg-black text-white py-2 rounded mb-2 hover:bg-gray-800 responsive-text-small text-center font-medium shadow-md">
+                  Apply Now
+                </a>
+
+              @endif
 
             @endif
 
-          @endif
+            <a href="{{ route('support') }}" class="block w-full border py-2 rounded hover:bg-gray-50 responsive-text-small text-center">
+              Contact Us
+            </a>
 
-          <a href="{{ route('support') }}" class="block w-full border py-2 rounded hover:bg-gray-50 responsive-text-small text-center">
-            Contact Us
-          </a>
+          @else
+
+            <a href="{{ route('support') }}" class="block w-full border py-2 rounded hover:bg-gray-50 responsive-text-small text-center">
+              Contact Us
+            </a>
+          
+          @endif
 
         @else
 
-          <a href="{{ route('support') }}" class="block w-full border py-2 rounded hover:bg-gray-50 responsive-text-small text-center">
-            Contact Us
+          <a href="{{ route('login') }}" 
+            class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-2 responsive-text-small text-center font-medium shadow-md">
+            Login to Apply
           </a>
-        
-        @endif
+
+        @endauth
 
         <div class="mt-8">
           <p class="font-semibold responsive-text-small">Application Start:</p>

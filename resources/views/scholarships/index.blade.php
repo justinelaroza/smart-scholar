@@ -39,7 +39,7 @@
           </div>
           
           <div class="flex items-center gap-5">
-            <label for="status" class="text-nowrap">Status:</label>
+            <label for="status" class="text-nowrap">Scholarship Status:</label>
             <select name="status" onchange="this.form.submit()" class="w-full md:w-auto px-3 py-2 text-gray-700 border-b border-gray-300">
               <option value="">All</option>
               <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
@@ -84,13 +84,27 @@
                   <div class="grid grid-cols-2 md:grid-cols-4 w-full gap-y-2 gap-x-6 mt-4 text-gray-600 responsive-text-small">
                     <p class="text-center md:text-start">Education Level<br><span class="font-medium text-black">{{ $scholarship->education_level }}</span></p>
                     <p class="text-center md:text-start">Submission Deadline<br><span class="font-medium text-black">{{ \Carbon\Carbon::parse($scholarship->submission_deadline)->format('m/d/Y') }}</span></p>
-                    <p class="text-center md:text-start">Amount<br><span class="font-medium text-black">₱ {{ number_format($scholarship->amount, 0) }}</span></p>
-                    <p class="text-center md:text-start">Status<br>
-                      <span class="font-medium text-white rounded-2xl px-5 py-1 
+                    <p class="text-center md:text-start">Scholarship Status<br>
+                      <span class="font-medium text-white rounded-2xl px-5 py-1
                         {{ $scholarship->status === 'Open' ? 'bg-green-500' : 'bg-red-500' }}">
                         {{ $scholarship->status }}
                       </span>
                     </p>
+                    @auth
+                      <p class="text-center md:text-start">Application Status<br>
+                        <span class="font-medium text-white rounded-2xl px-5 py-1
+                          {{ $scholarship->has_applied ? 'bg-green-500' : 'bg-red-500' }}">
+                          {{ $scholarship->has_applied ? 'Applied' : 'Not Applied' }}
+                        </span>
+                      </p>
+                      @else
+                        <p class="text-center md:text-start">
+                          Application Status<br>
+                          <a href="{{ route('login') }}" class="inline-block font-medium text-white rounded-2xl px-5 py-1 bg-gray-500 hover:bg-gray-600 transition responsive-text-xs text-nowrap">
+                            Login First
+                          </a>
+                        </p>
+                    @endauth
                   </div>
                 </div>
                 

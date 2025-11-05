@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
   nextBtn.addEventListener("click", nextPic);
   prevBtn.addEventListener("click", previousPic);
 
-  setInterval(nextPic, 4000);
+  setInterval(nextPic, 5000);
 
   //Facebook script
   async function loadFeed() {

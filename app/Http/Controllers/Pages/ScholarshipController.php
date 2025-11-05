@@ -36,12 +36,20 @@ class ScholarshipController extends Controller
 
         $scholarships = $query->orderBy('created_at', 'desc')->paginate(5)->appends($request->query());
 
+        $user = Auth::user();
+
+        if ($user) {
+            foreach ($scholarships as $scholarship) {
+                $scholarship->has_applied = FileUpload::where('user_id', $user->id)->where('scholarship_id', $scholarship->id)->exists();
+            }
+        } 
+
         return view('scholarships.index', compact('scholarships'));
     }
 
     public function show($id) 
     {
-        $scholarship = Scholarship::withCount('generalInfos')->findOrFail($id);
+        $scholarship = Scholarship::withCount('fileUploads')->findOrFail($id);
         
         $user = Auth::user();
 

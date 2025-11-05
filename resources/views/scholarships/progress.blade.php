@@ -5,7 +5,7 @@
   <div class="w-[90%] lg:w-3/4">
 
     <div class="flex items-start mb-4">
-      <a href="{{ route('profile') }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">← Back</a>
+      <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="cursor-pointer border border-gray-300 responsive-text-xs text-gray-600 hover:text-black py-1 px-2">← Back</a>
     </div>
 
     <div class="bg-white shadow-lg rounded-2xl p-6 md:p-10">
@@ -115,7 +115,7 @@
         @if ($fileUpload->progress === 'Requires Revision')
 
           <div class="mt-8 text-center">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg responsive-text-small transition">
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg responsive-text-small transition cursor-pointer">
               Resubmit All
             </button>
           </div>
