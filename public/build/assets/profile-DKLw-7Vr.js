@@ -1,1 +1,0 @@
-document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".toggle-section").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.target,c=document.getElementById(t),n=e.querySelector("svg");c.classList.toggle("hidden"),n.classList.toggle("rotate-180")})})});

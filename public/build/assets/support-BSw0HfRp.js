@@ -1,1 +1,0 @@
-document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".faq-toggle").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.index,n=document.querySelectorAll(".faq-answer")[t],o=e.querySelector("svg");n.classList.toggle("hidden"),o.classList.toggle("rotate-180")})})});
