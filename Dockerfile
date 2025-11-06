@@ -29,7 +29,7 @@ RUN chmod -R 777 storage bootstrap/cache
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Install and build frontend
-RUN npm ci \
+RUN npm install \
  && npm run build \
  && echo "=== BUILD OUTPUT ===" \
  && ls -R public/build || echo "no build folder found"
