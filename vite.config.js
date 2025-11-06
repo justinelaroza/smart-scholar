@@ -3,12 +3,7 @@ import laravel from 'laravel-vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-    base: '/build/',
-    build: {
-        manifest: true,
-        outDir: 'public/build',
-        emptyOutDir: true,
-    },
+    base: '',
     plugins: [
         laravel({
             input: [
