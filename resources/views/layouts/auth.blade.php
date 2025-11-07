@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="{{ asset('assets/icons/favicon-icon.png') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="overflow-hidden">
 
   <main>
     @if(session('success'))

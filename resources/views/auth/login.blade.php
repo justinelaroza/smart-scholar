@@ -2,7 +2,7 @@
 
 @section('maincontent')
 
-<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center h-screen overflow-hidden flex items-center justify-center">
+<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-dvh overflow-hidden flex items-center justify-center">
 
   <div class="grid grid-cols-1 w-xs justify-center items-center gap-5 p-10 border-1 bg-white rounded-sm md:rounded-md md:grid-rows-none md:grid-cols-[250px_1fr] md:w-2xl md:h-96 md:gap-10">
     

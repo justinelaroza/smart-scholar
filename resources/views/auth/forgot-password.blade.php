@@ -2,7 +2,7 @@
 
 @section('maincontent')
 
-<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-screen flex items-center justify-center">
+<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-dvh flex items-center justify-center">
   
   <div class="flex flex-col md:flex-row">
 

@@ -2,7 +2,7 @@
 
 @section('maincontent')
 
-<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center h-screen overflow-hidden flex items-center justify-center">
+<div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-dvh overflow-hidden flex items-center justify-center">
 
   <div class="flex flex-col md:flex-row">
     <div id="panel" class="rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl p-2 flex flex-row gap-3 items-center justify-center bg-[rgb(59,0,151)] md:flex-col md:p-3 md:gap-5">
