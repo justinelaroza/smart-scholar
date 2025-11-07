@@ -27,7 +27,7 @@ body {
   @apply border p-2 rounded-sm md:p-3.5 md:rounded-md;  
 } 
 .register-input { 
-  @apply border rounded-xs p-2 md:rounded-md md:p-3;  
+  @apply border rounded-xs p-2 md:rounded-md md:p-3 text-sm;  
 } 
 .otp-input { 
   @apply w-1/6 border rounded-xl md:rounded-2xl text-center;  

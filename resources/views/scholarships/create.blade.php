@@ -51,7 +51,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block font-medium responsive-text-small">Date of Birth</label>
-            <input name="client_birthdate" type="date" class="datepicker mt-1 w-full border rounded-lg p-2 responsive-text-xs" placeholder="Birthday" required />
+            <input name="client_birthdate" type="date" class="datepicker mt-1 w-full max-w-full border rounded-lg p-2 responsive-text-xs" placeholder="Birthday" required />
           </div>
           <div>
             <label class="block font-medium responsive-text-small">Civil Status</label>
@@ -188,7 +188,7 @@
           </div>
           <div>
             <label class="block font-medium responsive-text-small">Date of Birth</label>
-            <input name="beneficiary_birthdate" type="date" class="datepicker mt-1 w-full border rounded-lg p-2 responsive-text-xs" placeholder="Birthday" required />
+            <input name="beneficiary_birthdate" type="date" class="datepicker mt-1 border rounded-lg p-2 responsive-text-xs w-full max-w-full" placeholder="Birthday" required />
           </div>
         </div>
 
@@ -244,7 +244,7 @@
                     <option value="Female">Female</option>
                   </select>
                 </td>
-                <td class="border px-2 py-1"><input name="family_members[0][birthdate]" type="date" class="w-full responsive-text-xs" required /></td>
+                <td class="border px-2 py-1"><input name="family_members[0][birthdate]" type="date" class="w-full max-w-full responsive-text-xs" required /></td>
                 <td class="border px-2 py-1">
                   <select name="family_members[0][civil_status]" class="w-full responsive-text-xs" required>
                     <option value="Single">Single</option>

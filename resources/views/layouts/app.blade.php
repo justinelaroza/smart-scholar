@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Smart Scholar</title>
   <script src="https://kit.fontawesome.com/729ccf9ac8.js" crossorigin="anonymous"></script>
+  <link rel="icon" type="image/png" href="{{ asset('assets/icons/favicon-icon.png') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/components/navbar.js'])
 </head>
 <body>
