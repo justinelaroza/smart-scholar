@@ -7,10 +7,4 @@ window.Swal = Swal;
 flatpickr(".datepicker", {
   altInput: true,
   dateFormat: "Y-m-d",
-  onReady: function(selectedDates, dateStr, instance) {
-    if (instance.altInput) {
-      instance.altInput.removeAttribute("readonly");
-      instance.altInput.setAttribute("placeholder", "Birthday");
-    }
-  }
 });
