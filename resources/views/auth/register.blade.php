@@ -19,14 +19,14 @@
 
         {{-- Panel 1: Registration --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
-          <div class="w-full grid py-4 px-2 grid-rows-[1fr_5.5fr_30px] md:grid-rows-[1fr_3fr_70px] md:p-5">
+          <div class="w-full grid py-4 px-2 grid-rows-[1fr_5fr] md:p-5">
 
             <div class="flex items-center justify-center flex-col gap-2 md:gap-4">
               <p class="text-2xl md:text-5xl font-bold">Get Started</p>
               <p class="text-sm md:text-base">Already have an account? <a href="{{ route('login') }}" class="text-blue-500">Log in</a></p>
             </div>
 
-            <form id="registerForm" method="POST" action="{{ route('register.store') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5">
+            <form id="registerForm" method="POST" action="{{ route('register.store') }}" class="flex justify-center flex-col gap-2 px-2 md:gap-5 md:p-5 mt-3 md:mt-2">
               @csrf
               <div class="grid grid-cols-2 gap-2 md:gap-3">
                 <input type="text" name="first_name" placeholder="First Name" class="register-input" value="{{ old('first_name') }}" required>
