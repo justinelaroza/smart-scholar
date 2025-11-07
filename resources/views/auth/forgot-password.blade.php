@@ -47,7 +47,7 @@
             </div>
 
             <div class="flex justify-center items-center">
-              <button id="continue-btn" type="submit" class="border responsive-text-xs py-1 px-4 md:py-3 md:px-8 md:rounded-2xl bg-blue-500 text-white rounded-md cursor-pointer">Continue</button>
+              <button id="continue-btn" type="submit" class="border responsive-text-xs py-1 px-4 md:py-3 md:px-8 md:rounded-2xl bg-blue-500 text-white rounded-md cursor-pointer mb-3">Continue</button>
             </div>
           </form>
         </div>

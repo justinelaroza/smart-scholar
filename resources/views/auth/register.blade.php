@@ -19,7 +19,7 @@
 
         {{-- Panel 1: Registration --}}
         <div class="flex flex-col w-1/3 bg-white md:justify-between md:flex-row">
-          <div class="w-full grid py-4 px-2 grid-rows-[1fr_5fr] md:p-5">
+          <div class="w-full flex flex-col py-6 px-2 md:p-6">
 
             <div class="flex items-center justify-center flex-col gap-2 md:gap-4">
               <p class="text-2xl md:text-5xl font-bold">Get Started</p>
