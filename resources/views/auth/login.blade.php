@@ -4,11 +4,20 @@
 
 <div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-dvh overflow-hidden flex items-center justify-center">
 
+  <div class="absolute top-4 left-4">
+    <a href="{{ route('home') }}" class="flex items-center gap-1 text-sm text-white hover:text-blue-200 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
   <div class="grid grid-cols-1 w-xs justify-center items-center gap-5 p-10 border-1 bg-white rounded-sm md:rounded-md md:grid-rows-none md:grid-cols-[250px_1fr] md:w-2xl md:h-96 md:gap-10">
     
-    <div class="flex justify-center items-center">
-      <img src="{{ asset('assets/images/pg-logo.png') }}" alt="Padre Garcia logo" class="max-w-45 md:w-3xs md:max-w-none">
-    </div>
+    <a href="{{ route('home') }}" class="flex justify-center items-center">
+      <img src="{{ asset('assets/images/pg-logo.png') }}" alt="Padre Garcia logo" class="max-w-45 md:w-3xs md:max-w-none hover:opacity-80 transition">
+    </a>
 
     <div>
 
