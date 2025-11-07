@@ -168,12 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (response.status === 500) {
-
-      const text = await response.text();
       Swal.fire({
         icon: 'error',
         title: 'Server Error',
-        text: text || 'Something went wrong on our end. Please try again later.',
+        text: 'Something went wrong on our end. Please try again later.',
         confirmButtonColor: '#2563eb'
       });
       verifyBtn.disabled = false;
