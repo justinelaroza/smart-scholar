@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
       Swal.fire({
         icon: 'error',
         title: 'Server Error',
-        text: 'Something went wrong on our end. Please try again later.',
+        text: text || 'Something went wrong on our end. Please try again later.',
         confirmButtonColor: '#2563eb'
       });
       verifyBtn.disabled = false;
