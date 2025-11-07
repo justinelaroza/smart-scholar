@@ -168,6 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (response.status === 500) {
+
+      const text = await response.text();
       Swal.fire({
         icon: 'error',
         title: 'Server Error',
