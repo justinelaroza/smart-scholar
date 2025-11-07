@@ -47,11 +47,6 @@ class ForgotPasswordController extends Controller
         $message = "Your OTP code is {$code}. It will expire in 5 minutes.";
         $resp = $sms->sendSms($phone, $message);
 
-        if (app()->environment('local') && !$resp['ok']) {
-            Log::warning('IPROG SMS failed in local; allowing flow.', ['resp' => $resp]);
-            $resp['ok'] = true;
-        }
-
         return $resp;
     }
 
