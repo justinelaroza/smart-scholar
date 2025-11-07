@@ -38,7 +38,7 @@
                   <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
                 </select>
 
-                <input type="date" name="birthday" class="datepicker register-input w-full max-w-full" placeholder="Birthday" value="{{ old('birthday') }}" required>
+                <input type="text" name="birthday" class="datepicker register-input w-full max-w-full" placeholder="Birthday" value="{{ old('birthday') }}" required>
               </div>
 
               <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}" required>

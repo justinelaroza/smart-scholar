@@ -30,12 +30,11 @@
         </div>
 
         <div class="w-full flex flex-col items-center justify-center gap-3 md:gap-4">
-          <button id="loginBtn" type="submit" class="text-sm responsive-text-small md:rounded-md bg-blue-500 text-white w-2/3 md:w-3/5 py-2 md:py-3 rounded-sm cursor-pointer">
+          <button id="loginBtn" type="submit" class="text-lg md:rounded-md bg-blue-500 text-white w-2/3 md:w-3/5 py-2 md:py-3 rounded-sm cursor-pointer">
             Login
           </button>
           
-          <p class="text-sm responsive-text-small">
-            Don't have an account?
+          <p class="text-base">Don't have an account?
             <a href="{{ route('register') }}" class="text-blue-700">Register</a>
           </p>
         </div>
