@@ -21,11 +21,6 @@
   @apply w-1/6 border rounded-xl md:rounded-2xl text-center;  
 }
 
-.flatpickr-alt-input::placeholder {
-  color: #999;
-  opacity: 1; 
-}
-
 /* scholarship module */
 /* ─────────── Smaller Sizes ─────────── */
 .responsive-text-xxs {

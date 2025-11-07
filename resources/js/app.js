@@ -9,7 +9,8 @@ flatpickr(".datepicker", {
   dateFormat: "Y-m-d",
   onReady: function(selectedDates, dateStr, instance) {
     if (instance.altInput) {
-      instance.altInput.setAttribute('placeholder', 'Birthday');
+      instance.altInput.removeAttribute("readonly");
+      instance.altInput.setAttribute("placeholder", "Birthday");
     }
   }
 });
