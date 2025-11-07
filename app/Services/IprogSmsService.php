@@ -36,11 +36,16 @@ class IprogSmsService
 
             $responseBody = json_decode($response->getBody()->getContents(), true);
 
-            // Check if the response is successful
-            if ($responseBody['status'] === 'success') {
+            //Log::info('IPROG SMS response body', ['body' => $responseBody]);
+
+            if (
+                (isset($responseBody['status']) && (int)$responseBody['status'] === 200) ||
+                (isset($responseBody['message']) && stripos($responseBody['message'], 'queued') !== false)
+            ) {
                 return ['ok' => true, 'body' => $responseBody];
             } else {
-                return ['ok' => false, 'body' => $responseBody['message'], 'statusCode' => $response->getStatusCode()];
+                Log::warning('Unexpected SMS response', ['body' => $responseBody]);
+                return ['ok' => false, 'body' => $responseBody, 'statusCode' => $response->getStatusCode()];
             }
         } catch (\Exception $e) {
             Log::error('Error sending SMS: ' . $e->getMessage());
