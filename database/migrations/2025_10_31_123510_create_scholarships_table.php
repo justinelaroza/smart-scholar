@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->string('funder');
             $table->text('description');
             $table->enum('education_level', ['Any', 'Senior High', 'College'])->default('Any');
-            $table->date('application_start');             
+            $table->date('application_start')->default(DB::raw('CURRENT_DATE'));             
             $table->date('submission_deadline');
             $table->integer('amount');
             $table->enum('status', ['Open', 'Close'])->default('Open');

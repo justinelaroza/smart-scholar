@@ -33,6 +33,7 @@ return new class extends Migration
             $table->text('remarks_breakdown_of_expenses')->default('No Remarks');
 
             $table->enum('progress', ['Under Review', 'Approved', 'Rejected', 'Requires Revision'])->default('Under Review');
+            $table->text('qr_code_path')->nullable();
             $table->timestamps();
         });
     }
