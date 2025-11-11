@@ -74,7 +74,7 @@
                   <td class="px-4 py-3 responsive-text-xs text-gray-800 font-medium">{{ $label }}</td>
 
                   <td class="px-4 py-3">
-                    <a href="{{ asset('storage/' . $fileUpload->$field) }}" target="_blank" class="text-blue-600 hover:underline responsive-text-xs">
+                    <a href="{{ route('file.download', ['id' => $fileUpload->id, 'field' => $field]) }}" class="text-blue-600 hover:underline responsive-text-xs">
                       View File
                     </a>
                   </td>

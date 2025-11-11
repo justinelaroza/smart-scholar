@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/scholarship/{id}/upload', [ScholarshipController::class, 'storeFileUpload'])->name('scholarship.fileupload');
   Route::get('/scholarship/{id}/progress', [ScholarshipController::class, 'progressReport'])->name('scholarship.progress');
   Route::patch('/fileupload/{id}/resubmit/', [ScholarshipController::class, 'resubmit'])->name('fileupload.resubmit');
+  Route::get('/file/{id}/{field}', [ScholarshipController::class, 'download'])->name('file.download');
   Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 });
 

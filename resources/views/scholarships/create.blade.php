@@ -244,7 +244,7 @@
                     <option value="Female">Female</option>
                   </select>
                 </td>
-                <td class="border px-2 py-1"><input name="family_members[0][birthdate]" type="text" class="w-full max-w-full responsive-text-xs" required /></td>
+                <td class="border px-2 py-1"><input name="family_members[0][birthdate]" type="date" class="w-full max-w-full responsive-text-xs" required /></td>
                 <td class="border px-2 py-1">
                   <select name="family_members[0][civil_status]" class="w-full responsive-text-xs" required>
                     <option value="Single">Single</option>

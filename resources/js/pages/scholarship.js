@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const tbody = document.getElementById('family-table-body');
   const addBtn = document.getElementById('add-family-row');
+  const form = document.querySelector('form');
 
   // find highest index from current rows
   const getNextIndex = () => {
@@ -37,5 +38,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const rows = tbody.querySelectorAll('tr');
     if (rows.length <= 1) return; // keep at least one row
     btn.closest('tr').remove();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); // prevent default submission
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Please confirm that all information is correct.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, submit!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit(); // submit form after confirmation
+      }
+    });
   });
 });

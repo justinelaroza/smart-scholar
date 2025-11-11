@@ -54,7 +54,7 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('home'));
+        return redirect()->intended(route('home'))->with('success', 'Login successful');
     }
 
     protected function respondFailure(Request $request)

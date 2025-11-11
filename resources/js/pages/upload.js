@@ -16,7 +16,9 @@ FilePond.registerPlugin(
 
 // Initialize
 document.addEventListener("DOMContentLoaded", function() {
+  const form = document.querySelector('form');
   const fileInputs = document.querySelectorAll('input[type="file"]');
+  
   fileInputs.forEach(input => {
     FilePond.create(input, {
       allowMultiple: false,
@@ -26,6 +28,22 @@ document.addEventListener("DOMContentLoaded", function() {
       storeAsFile: true,
       imagePreviewMaxHeight: 300,
       labelIdle: `📂 Drag & Drop your file or <span class="filepond--label-action">Browse</span>`,
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); // prevent default submission
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Please confirm that all information is correct.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, submit!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit(); // submit form after confirmation
+      }
     });
   });
 });

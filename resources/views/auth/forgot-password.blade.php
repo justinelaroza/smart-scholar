@@ -69,11 +69,6 @@
               <img class="h-full" src="{{ asset('assets/images/otp-sent.png') }}" alt="OTP sent">
             </div>
 
-            <div class="flex justify-between items-center w-3xs md:w-sm">
-              <p class="responsive-text-xxs md:responsive-text-xs">Remaining time: <span class="text-blue-500">00:59s</span></p>
-              <p class="responsive-text-xxs md:responsive-text-xs">Didn’t get the code? <span class="text-blue-500 cursor-pointer">Resend</span></p>
-            </div>
-
             <div class="w-3xs h-10 gap-1 mb-4 md:w-sm md:h-16 flex md:gap-2 md:mb-8">
               <input type="text" maxlength="1" class="otp-input" required>
               <input type="text" maxlength="1" class="otp-input" required>

@@ -145,13 +145,15 @@ class ScholarshipController extends Controller
         // Loop through each document field
         foreach ($documents as $field) {
             if ($request->hasFile($field)) {
-                // Delete old file
-                Storage::delete('public/' . $fileUpload->$field);
+                // Delete old file from local disk
+                if (Storage::disk('local')->exists($fileUpload->$field)) {
+                    Storage::disk('local')->delete($fileUpload->$field);
+                }
 
-                // Store new file
-                $path = $request->file($field)->store('uploads', 'public');
+                // Store new file on local disk
+                $path = $request->file($field)->store('uploads', 'local');
 
-                // Update file field
+                // Update file path in DB
                 $fileUpload->$field = $path;
 
                 // Reset corresponding remark to "No Remarks"
@@ -284,13 +286,13 @@ class ScholarshipController extends Controller
         ]);
 
         $paths = [
-            'school_registration_form' => $request->file('school_registration_form')->store('uploads/school_forms', 'public'),
-            'barangay_clearance' => $request->file('barangay_clearance')->store('uploads/barangay_clearances', 'public'),
-            'certificate_of_indigency' => $request->file('certificate_of_indigency')->store('uploads/indigency_certificates', 'public'),
-            'school_id_front' => $request->file('school_id_front')->store('uploads/school_ids', 'public'),
-            'school_id_back' => $request->file('school_id_back')->store('uploads/school_ids', 'public'),
-            'cedula' => $request->file('cedula')->store('uploads/cedulas', 'public'),
-            'breakdown_of_expenses' => $request->file('breakdown_of_expenses')->store('uploads/expenses', 'public'),
+            'school_registration_form' => $request->file('school_registration_form')->store('uploads/school_forms', 'local'),
+            'barangay_clearance' => $request->file('barangay_clearance')->store('uploads/barangay_clearances', 'local'),
+            'certificate_of_indigency' => $request->file('certificate_of_indigency')->store('uploads/indigency_certificates', 'local'),
+            'school_id_front' => $request->file('school_id_front')->store('uploads/school_ids', 'local'),
+            'school_id_back' => $request->file('school_id_back')->store('uploads/school_ids', 'local'),
+            'cedula' => $request->file('cedula')->store('uploads/cedulas', 'local'),
+            'breakdown_of_expenses' => $request->file('breakdown_of_expenses')->store('uploads/expenses', 'local'),
         ];
 
         FileUpload::create([
@@ -307,5 +309,25 @@ class ScholarshipController extends Controller
 
         return redirect()->route('scholarship')->with('success', 'Files uploaded successfully!');
     }
+
+    public function download($id, $field)
+    {
+        $fileUpload = FileUpload::findOrFail($id);
+
+        if (!in_array($field, [
+            'school_registration_form',
+            'barangay_clearance',
+            'certificate_of_indigency',
+            'school_id_front',
+            'school_id_back',
+            'cedula',
+            'breakdown_of_expenses'
+        ])) {
+            abort(404);
+        }
+
+        return Storage::disk('local')->download($fileUpload->$field);
+    }
+
 
 }
