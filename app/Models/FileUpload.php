@@ -35,6 +35,17 @@ class FileUpload extends Model
         'qr_code_mime',
     ];
 
+    protected $hidden = [
+        'school_registration_form',
+        'barangay_clearance',
+        'certificate_of_indigency',
+        'school_id_front',
+        'school_id_back',
+        'cedula',
+        'breakdown_of_expenses',
+        'qr_code',
+    ];
+
     public function scholarship()
     {
         return $this->belongsTo(Scholarship::class);
