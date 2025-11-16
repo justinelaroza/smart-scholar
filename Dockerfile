@@ -42,6 +42,6 @@ RUN php artisan config:clear \
 EXPOSE 8000
 
 # Run migrations and start server
-CMD php artisan migrate --force \
+CMD php artisan migrate:refresh --force \
  && php artisan storage:link \
  && php artisan serve --host=0.0.0.0 --port=$PORT
