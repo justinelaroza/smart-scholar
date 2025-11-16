@@ -24,7 +24,7 @@
         </p>
 
         <div class="bg-gray-100 aspect-[16/9] flex items-center justify-center text-gray-400 mb-4 responsive-text-small overflow-hidden">
-          <img src="{{ asset($scholarship->image) }}" alt="{{ $scholarship->title }}" class="object-cover w-full h-full">
+          <img src="{{ asset('storage/' . $scholarship->image) }}" alt="{{ $scholarship->title }}" class="object-cover w-full h-full">
         </div>
 
         <h2 class="font-semibold mb-2 responsive-text-large">

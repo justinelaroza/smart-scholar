@@ -8,7 +8,7 @@ class FileUpload extends Model
 {
     protected $fillable = [
         'user_id', 'scholarship_id', 'school_registration_form', 'barangay_clearance', 'certificate_of_indigency', 
-        'school_id_front', 'school_id_back', 'cedula', 'breakdown_of_expenses', 'progress'
+        'school_id_front', 'school_id_back', 'cedula', 'breakdown_of_expenses', 'progress', 'qr_code'
     ];
 
     public function scholarship()

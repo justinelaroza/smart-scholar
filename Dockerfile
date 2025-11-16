@@ -37,10 +37,11 @@ RUN npm install \
 # Clear caches and link storage
 RUN php artisan config:clear \
  && php artisan route:clear \
- && php artisan view:clear \
- && php artisan storage:link || true
+ && php artisan view:clear
 
 EXPOSE 8000
 
 # Run migrations and start server
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
+CMD php artisan migrate --force \
+ && php artisan storage:link \
+ && php artisan serve --host=0.0.0.0 --port=$PORT

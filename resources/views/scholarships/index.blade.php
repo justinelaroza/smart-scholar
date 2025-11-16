@@ -64,7 +64,7 @@
                 <div class="flex flex-row gap-4 w-full items-start">
 
                   <div class="w-[100px] min-w-[100px] h-[100px] bg-gray-100 flex md:min-w-[170px] md:w-[170px] md:h-[170px] border rounded-md md:rounded-lg overflow-hidden">
-                    <img src="{{ asset($scholarship->image ?? 'assets/icons/profile-icon.png') }}" 
+                    <img src="{{ asset('storage/' . $scholarship->image) }}" 
                         alt="Scholarship image" class="w-full h-full object-cover">
                   </div>
 
