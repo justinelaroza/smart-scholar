@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Scholarship extends Model
 {
-  protected $fillable = [
+    protected $fillable = [
         'title', 'funder', 'description', 'education_level', 
         'application_start', 'submission_deadline', 'amount', 
         'status', 'image', 'residency_requirement'
+    ];
+
+    protected $hidden = [
+        'image'
     ];
 
     // Add this accessor to handle binary image data
