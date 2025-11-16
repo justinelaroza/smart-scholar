@@ -16,13 +16,21 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('scholarship_id')->constrained('scholarships')->onDelete('cascade');
 
-            $table->string('school_registration_form');
-            $table->string('barangay_clearance');
-            $table->string('certificate_of_indigency');
-            $table->string('school_id_front');
-            $table->string('school_id_back');
-            $table->string('cedula');
-            $table->string('breakdown_of_expenses');
+            $table->binary('school_registration_form');
+            $table->binary('barangay_clearance');
+            $table->binary('certificate_of_indigency');
+            $table->binary('school_id_front');
+            $table->binary('school_id_back');
+            $table->binary('cedula');
+            $table->binary('breakdown_of_expenses');
+            
+            $table->string('school_registration_form_mime')->nullable();
+            $table->string('barangay_clearance_mime')->nullable();
+            $table->string('certificate_of_indigency_mime')->nullable();
+            $table->string('school_id_front_mime')->nullable();
+            $table->string('school_id_back_mime')->nullable();
+            $table->string('cedula_mime')->nullable();
+            $table->string('breakdown_of_expenses_mime')->nullable();
 
             $table->text('remarks_school_registration_form')->default('No Remarks');
             $table->text('remarks_barangay_clearance')->default('No Remarks');
@@ -33,7 +41,8 @@ return new class extends Migration
             $table->text('remarks_breakdown_of_expenses')->default('No Remarks');
 
             $table->enum('progress', ['Under Review', 'Approved', 'Rejected', 'Requires Revision'])->default('Under Review');
-            $table->text('qr_code_path')->nullable();
+            $table->binary('qr_code')->nullable();
+            $table->string('qr_code_mime')->nullable();
             $table->timestamps();
         });
     }
