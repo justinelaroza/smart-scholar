@@ -242,13 +242,13 @@ class ScholarshipController extends Controller
         ]);
 
         $binaryData = [
-            'school_registration_form' => file_get_contents($request->file('school_registration_form')->getRealPath()),
-            'barangay_clearance' => file_get_contents($request->file('barangay_clearance')->getRealPath()),
-            'certificate_of_indigency' => file_get_contents($request->file('certificate_of_indigency')->getRealPath()),
-            'school_id_front' => file_get_contents($request->file('school_id_front')->getRealPath()),
-            'school_id_back' => file_get_contents($request->file('school_id_back')->getRealPath()),
-            'cedula' => file_get_contents($request->file('cedula')->getRealPath()),
-            'breakdown_of_expenses' => file_get_contents($request->file('breakdown_of_expenses')->getRealPath()),
+            'school_registration_form' => base64_encode(file_get_contents($request->file('school_registration_form')->getRealPath())),
+            'barangay_clearance' => base64_encode(file_get_contents($request->file('barangay_clearance')->getRealPath())),
+            'certificate_of_indigency' => base64_encode(file_get_contents($request->file('certificate_of_indigency')->getRealPath())),
+            'school_id_front' => base64_encode(file_get_contents($request->file('school_id_front')->getRealPath())),
+            'school_id_back' => base64_encode(file_get_contents($request->file('school_id_back')->getRealPath())),
+            'cedula' => base64_encode(file_get_contents($request->file('cedula')->getRealPath())),
+            'breakdown_of_expenses' => base64_encode(file_get_contents($request->file('breakdown_of_expenses')->getRealPath())),
         ];
 
         $mimeTypes = [

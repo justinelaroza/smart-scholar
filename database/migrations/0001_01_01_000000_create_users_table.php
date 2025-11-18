@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -41,6 +42,24 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        DB::table('users')->insert([
+    'id' => 1, // force ID so your FK works
+    'account_code' => 'USR-0001',
+    'password' => bcrypt('password123'),
+    'first_name' => 'Test',
+    'last_name' => 'User',
+    'gender' => 'Male',
+    'birthday' => '2000-01-01',
+    'full_address' => 'Padre Garcia, Batangas',
+    'email' => 'test@example.com',
+    'phone_number' => '09123456789',
+    'email_verified_at' => now(),
+    'remember_token' => null,
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+
     }
 
     /**
@@ -48,7 +67,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::disableForeignKeyConstraints(); // Temporarily disable foreign keys
+    Schema::dropIfExists('users');  // Drop the table
+    Schema::enableForeignKeyConstraints();
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
