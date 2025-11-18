@@ -7,4 +7,10 @@ window.Swal = Swal;
 flatpickr(".datepicker", {
   altInput: true,
   dateFormat: "Y-m-d",
+  maxDate: "today"
+});
+
+const today = new Date().toISOString().split("T")[0];
+document.querySelectorAll('input[type="date"]').forEach(input => {
+  input.setAttribute("max", today);
 });
