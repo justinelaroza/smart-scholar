@@ -241,30 +241,27 @@ class ScholarshipController extends Controller
             'breakdown_of_expenses' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $binaryData = [
-            'school_registration_form' => base64_encode(file_get_contents($request->file('school_registration_form')->getRealPath())),
-            'barangay_clearance' => base64_encode(file_get_contents($request->file('barangay_clearance')->getRealPath())),
-            'certificate_of_indigency' => base64_encode(file_get_contents($request->file('certificate_of_indigency')->getRealPath())),
-            'school_id_front' => base64_encode(file_get_contents($request->file('school_id_front')->getRealPath())),
-            'school_id_back' => base64_encode(file_get_contents($request->file('school_id_back')->getRealPath())),
-            'cedula' => base64_encode(file_get_contents($request->file('cedula')->getRealPath())),
-            'breakdown_of_expenses' => base64_encode(file_get_contents($request->file('breakdown_of_expenses')->getRealPath())),
+        $paths = [
+            'school_registration_form' => $request->file('school_registration_form')->store('uploads/school_forms', 'local'),
+            'barangay_clearance' => $request->file('barangay_clearance')->store('uploads/barangay_clearances', 'local'),
+            'certificate_of_indigency' => $request->file('certificate_of_indigency')->store('uploads/indigency_certificates', 'local'),
+            'school_id_front' => $request->file('school_id_front')->store('uploads/school_ids', 'local'),
+            'school_id_back' => $request->file('school_id_back')->store('uploads/school_ids', 'local'),
+            'cedula' => $request->file('cedula')->store('uploads/cedulas', 'local'),
+            'breakdown_of_expenses' => $request->file('breakdown_of_expenses')->store('uploads/expenses', 'local'),
         ];
 
-        $mimeTypes = [
-            'school_registration_form_mime' => $request->file('school_registration_form')->getMimeType(),
-            'barangay_clearance_mime' => $request->file('barangay_clearance')->getMimeType(),
-            'certificate_of_indigency_mime' => $request->file('certificate_of_indigency')->getMimeType(),
-            'school_id_front_mime' => $request->file('school_id_front')->getMimeType(),
-            'school_id_back_mime' => $request->file('school_id_back')->getMimeType(),
-            'cedula_mime' => $request->file('cedula')->getMimeType(),
-            'breakdown_of_expenses_mime' => $request->file('breakdown_of_expenses')->getMimeType(),
-        ];
-
-        FileUpload::create(array_merge([
+        FileUpload::create([
             'user_id' => Auth::id(),
             'scholarship_id' => $id,
-        ], $binaryData, $mimeTypes));
+            'school_registration_form' => $paths['school_registration_form'],
+            'barangay_clearance' => $paths['barangay_clearance'],
+            'certificate_of_indigency' => $paths['certificate_of_indigency'],
+            'school_id_front' => $paths['school_id_front'],
+            'school_id_back' => $paths['school_id_back'],
+            'cedula' => $paths['cedula'],
+            'breakdown_of_expenses' => $paths['breakdown_of_expenses'],
+        ]);
 
         return redirect()->route('scholarship')->with('success', 'Files uploaded successfully!');
     }
@@ -273,29 +270,28 @@ class ScholarshipController extends Controller
     {
         $fileUpload = FileUpload::findOrFail($id);
 
-        // Define all document fields
         $documents = [
-            'school_registration_form',
-            'barangay_clearance',
-            'certificate_of_indigency',
-            'school_id_front',
-            'school_id_back',
-            'cedula',
-            'breakdown_of_expenses',
+            'school_registration_form' => 'uploads/school_forms',
+            'barangay_clearance' => 'uploads/barangay_clearances',
+            'certificate_of_indigency' => 'uploads/indigency_certificates',
+            'school_id_front' => 'uploads/school_ids',
+            'school_id_back' => 'uploads/school_ids',
+            'cedula' => 'uploads/cedulas',
+            'breakdown_of_expenses' => 'uploads/expenses',
         ];
 
-        // Loop through each document field
-        foreach ($documents as $field) {
+         // Loop through each document field
+        foreach ($documents as $field => $folder) {
             if ($request->hasFile($field)) {
-                // Convert new file to binary
-                $binaryData = file_get_contents($request->file($field)->getRealPath());
-                
-                // Update binary data in DB
-                $fileUpload->$field = $binaryData;
+                // Delete old file
+                if (Storage::disk('local')->exists($fileUpload->$field)) {
+                    Storage::disk('local')->delete($fileUpload->$field);
+                }
 
-                // Update MIME type
-                $mimeField = $field . '_mime';
-                $fileUpload->$mimeField = $request->file($field)->getMimeType();
+                $path = $request->file($field)->store($folder, 'local');
+
+                // Update DB
+                $fileUpload->$field = $path;
 
                 // Reset corresponding remark
                 $remarkField = 'remarks_' . $field;
@@ -303,8 +299,6 @@ class ScholarshipController extends Controller
             }
         }
 
-
-        // Reset status to "Under Review"
         $fileUpload->progress = 'Under Review';
         $fileUpload->save();
 
@@ -328,21 +322,13 @@ class ScholarshipController extends Controller
         if (!in_array($field, $validFields)) {
             abort(404);
         }
+        
+        $filePath = $fileUpload->$field;
 
-        $fileData = $fileUpload->$field;
-
-        // Handle PostgreSQL resource stream
-        if (is_resource($fileData)) {
-            rewind($fileData);
-            $fileData = stream_get_contents($fileData);
+        if (!Storage::disk('local')->exists($filePath)) {
+            abort(404);
         }
 
-        // Get MIME type (if stored)
-        $mimeField = $field . '_mime';
-        $mimeType = $fileUpload->$mimeField ?? 'application/octet-stream';
-
-        return response($fileData)
-            ->header('Content-Type', $mimeType)
-            ->header('Content-Disposition', 'inline');
+        return response()->download(storage_path('app/' . $filePath));
     }
 }

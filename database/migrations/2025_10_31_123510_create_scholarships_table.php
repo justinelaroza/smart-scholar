@@ -26,24 +26,6 @@ return new class extends Migration
             $table->string('residency_requirement')->default('Padre Garcia, Batangas');
             $table->timestamps();
         });
-
-        DB::table('scholarships')->insert([
-        'title' => 'Test Scholarship',
-        'funder' => 'Test Foundation',
-        'description' => 'This is a test scholarship used for deployment verification.',
-        'education_level' => 'Any',
-        'application_start' => now(),
-        'submission_deadline' => now()->addDays(30),
-        'amount' => 10000,
-        'status' => 'Open',
-
-        // Example bytea/image data (hex → binary)
-        'image' => DB::raw("decode('89504E470D0A1A0A', 'hex')"),
-
-        'residency_requirement' => 'Padre Garcia, Batangas',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
     }
 
     /**
@@ -51,8 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints(); // Temporarily disable foreign keys
-    Schema::dropIfExists('scholarships');  // Drop the table
-    Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('scholarships');  // Drop the table
     }
 };
