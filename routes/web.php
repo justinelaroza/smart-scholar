@@ -11,7 +11,12 @@ use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\ProfileController;
 
 /* Authentication */
-
+Route::get('/debug-routes', function() {
+    $routes = collect(Route::getRoutes())->map(function($route) {
+        return $route->uri();
+    });
+    return response()->json($routes);
+});
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate')->middleware('throttle:5,1');
@@ -41,7 +46,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/scholarship/{id}/upload', [ScholarshipController::class, 'storeFileUpload'])->name('scholarship.fileupload');
   Route::get('/scholarship/{id}/progress', [ScholarshipController::class, 'progressReport'])->name('scholarship.progress');
   Route::patch('/fileupload/{id}/resubmit/', [ScholarshipController::class, 'resubmit'])->name('fileupload.resubmit');
-  Route::get('/file/{id}/{field}', [ScholarshipController::class, 'view'])->name('file.view');
+  Route::get('/file/{id}/{field}', [ScholarshipController::class, 'downloadCurrentFile'])->name('file.download');
   Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 });
 

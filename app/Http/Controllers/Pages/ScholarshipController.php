@@ -305,7 +305,7 @@ class ScholarshipController extends Controller
         return back()->with('success', 'Documents successfully resubmitted and are now under review.');
     }
 
-    public function view($id, $field)
+    public function downloadCurrentFile($id, $field)
     {
         $fileUpload = FileUpload::findOrFail($id);
 
@@ -329,6 +329,6 @@ class ScholarshipController extends Controller
             abort(404);
         }
 
-        return response()->download(storage_path('app/' . $filePath));
+        return Storage::disk('local')->download($filePath);
     }
 }

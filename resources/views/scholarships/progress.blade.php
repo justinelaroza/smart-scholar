@@ -74,8 +74,8 @@
                   <td class="px-4 py-3 responsive-text-xs text-gray-800 font-medium">{{ $label }}</td>
 
                   <td class="px-4 py-3">
-                    <a href="{{ route('file.view', ['id' => $fileUpload->id, 'field' => $field]) }}" target="_blank" class="text-blue-600 hover:underline responsive-text-xs">
-                      View File
+                    <a href="{{ route('file.download', ['id' => $fileUpload->id, 'field' => $field]) }}" class="text-blue-600 hover:underline responsive-text-xs">
+                      Download
                     </a>
                   </td>
 
