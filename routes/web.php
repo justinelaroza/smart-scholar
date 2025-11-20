@@ -10,13 +10,6 @@ use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\ProfileController;
 
-/* Authentication */
-Route::get('/debug-routes', function() {
-    $routes = collect(Route::getRoutes())->map(function($route) {
-        return $route->uri();
-    });
-    return response()->json($routes);
-});
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate')->middleware('throttle:5,1');
