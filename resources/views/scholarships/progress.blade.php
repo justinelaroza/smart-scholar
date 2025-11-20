@@ -74,8 +74,8 @@
                   <td class="px-4 py-3 responsive-text-xs text-gray-800 font-medium">{{ $label }}</td>
 
                   <td class="px-4 py-3">
-                    <a href="{{ route('file.download', ['id' => $fileUpload->id, 'field' => $field]) }}" class="text-blue-600 hover:underline responsive-text-xs">
-                      Download
+                    <a href="{{ route('file.download', ['id' => $fileUpload->id, 'field' => $field]) }}" target="_blank" class="text-blue-600 hover:underline responsive-text-xs">
+                      View File
                     </a>
                   </td>
 
@@ -85,7 +85,7 @@
                       @if ($remark !== 'No Remarks')
                         <div class="flex flex-col gap-2">
                           <span class="text-red-500 responsive-text-xs font-medium">{{ $remark }}</span>
-                          <input type="file" name="{{ $field }}" accept=".pdf,.jpg,.png,.jpeg" class="border border-gray-300 rounded px-2 py-1 text-xs w-full sm:w-3/4" required>
+                          <input type="file" name="{{ $field }}" accept=".jpg,.jpeg,.png" class="border border-gray-300 rounded px-2 py-1 text-xs w-full sm:w-3/4" required>
                         </div>
 
                       @else

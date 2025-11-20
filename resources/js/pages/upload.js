@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     FilePond.create(input, {
       allowMultiple: false,
       maxFileSize: '2MB',
-      acceptedFileTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+      acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg'],
       credits: false,
       storeAsFile: true,
       imagePreviewMaxHeight: 300,

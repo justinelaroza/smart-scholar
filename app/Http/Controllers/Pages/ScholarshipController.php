@@ -9,10 +9,20 @@ use App\Models\GeneralInfo;
 use App\Models\FamilyMember;
 use App\Models\FileUpload;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Cloudinary\Cloudinary;
 
 class ScholarshipController extends Controller
-{
+{   
+    private function getCloudinary()
+    {
+        return new Cloudinary([
+            'cloud' => [
+                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                'api_key' => env('CLOUDINARY_API_KEY'),
+                'api_secret' => env('CLOUDINARY_API_SECRET'),
+            ],
+        ]);
+    }
     public function index(Request $request)
     {
         $query = Scholarship::query();
@@ -232,24 +242,39 @@ class ScholarshipController extends Controller
     public function storeFileUpload(Request $request, $id) 
     {
         $validated = $request->validate([
-            'school_registration_form' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'barangay_clearance' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'certificate_of_indigency' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'school_id_front' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'school_id_back' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'cedula' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'breakdown_of_expenses' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'school_registration_form' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'barangay_clearance' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'certificate_of_indigency' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'school_id_front' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'school_id_back' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'cedula' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'breakdown_of_expenses' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $paths = [
-            'school_registration_form' => $request->file('school_registration_form')->store('uploads/school_forms', 'local'),
-            'barangay_clearance' => $request->file('barangay_clearance')->store('uploads/barangay_clearances', 'local'),
-            'certificate_of_indigency' => $request->file('certificate_of_indigency')->store('uploads/indigency_certificates', 'local'),
-            'school_id_front' => $request->file('school_id_front')->store('uploads/school_ids', 'local'),
-            'school_id_back' => $request->file('school_id_back')->store('uploads/school_ids', 'local'),
-            'cedula' => $request->file('cedula')->store('uploads/cedulas', 'local'),
-            'breakdown_of_expenses' => $request->file('breakdown_of_expenses')->store('uploads/expenses', 'local'),
+        $cloudinary = $this->getCloudinary();
+    
+        $paths = [];
+        $fields = [
+            'school_registration_form' => 'school_forms',
+            'barangay_clearance' => 'barangay_clearances',
+            'certificate_of_indigency' => 'indigency_certificates',
+            'school_id_front' => 'school_ids',
+            'school_id_back' => 'school_ids',
+            'cedula' => 'cedulas',
+            'breakdown_of_expenses' => 'expenses'
         ];
+
+        foreach ($fields as $field => $folder) {
+        $uploadResult = $cloudinary->uploadApi()->upload(
+            $request->file($field)->getRealPath(),
+            [
+                'folder' => "smart_scholar/{$folder}",
+                'resource_type' => 'image'  // auto
+            ]
+        );
+        
+        $paths[$field] = $uploadResult['secure_url'];
+    }
 
         FileUpload::create([
             'user_id' => Auth::id(),
@@ -270,30 +295,41 @@ class ScholarshipController extends Controller
     {
         $fileUpload = FileUpload::findOrFail($id);
 
+        $cloudinary = $this->getCloudinary();
+
         $documents = [
-            'school_registration_form' => 'uploads/school_forms',
-            'barangay_clearance' => 'uploads/barangay_clearances',
-            'certificate_of_indigency' => 'uploads/indigency_certificates',
-            'school_id_front' => 'uploads/school_ids',
-            'school_id_back' => 'uploads/school_ids',
-            'cedula' => 'uploads/cedulas',
-            'breakdown_of_expenses' => 'uploads/expenses',
+            'school_registration_form' => 'school_forms',
+            'barangay_clearance' => 'barangay_clearances',
+            'certificate_of_indigency' => 'indigency_certificates',
+            'school_id_front' => 'school_ids',
+            'school_id_back' => 'school_ids',
+            'cedula' => 'cedulas',
+            'breakdown_of_expenses' => 'expenses',
         ];
 
-         // Loop through each document field
+        $request->validate([
+            'school_registration_form' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'barangay_clearance' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'certificate_of_indigency' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'school_id_front' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'school_id_back' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'cedula' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'breakdown_of_expenses' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
         foreach ($documents as $field => $folder) {
             if ($request->hasFile($field)) {
-                // Delete old file
-                if (Storage::disk('local')->exists($fileUpload->$field)) {
-                    Storage::disk('local')->delete($fileUpload->$field);
-                }
 
-                $path = $request->file($field)->store($folder, 'local');
+                $uploadResult = $cloudinary->uploadApi()->upload(
+                    $request->file($field)->getRealPath(),
+                    [
+                        'folder' => "smart_scholar/{$folder}",
+                        'resource_type' => 'image'  // Always image now
+                    ]
+                );
 
-                // Update DB
-                $fileUpload->$field = $path;
+                $fileUpload->$field = $uploadResult['secure_url'];
 
-                // Reset corresponding remark
                 $remarkField = 'remarks_' . $field;
                 $fileUpload->$remarkField = 'No Remarks';
             }
@@ -323,12 +359,12 @@ class ScholarshipController extends Controller
             abort(404);
         }
         
-        $filePath = $fileUpload->$field;
+        $cloudinaryUrl = $fileUpload->$field;
 
-        if (!Storage::disk('local')->exists($filePath)) {
-            abort(404);
+        if (!$cloudinaryUrl) {
+            abort(404, 'File not found');
         }
 
-        return Storage::disk('local')->download($filePath);
+        return redirect($cloudinaryUrl);
     }
 }

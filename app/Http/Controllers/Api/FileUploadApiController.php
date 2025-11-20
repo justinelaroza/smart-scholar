@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\FileUpload;
-use Illuminate\Support\Facades\Storage;
 
 class FileUploadApiController extends Controller
 { 
@@ -26,15 +25,13 @@ class FileUploadApiController extends Controller
         abort(404);
     }
 
-    $filePath = $fileUpload->$field;
+    $cloudinaryUrl = $fileUpload->$field;
 
-    if (!$filePath || !Storage::disk('local')->exists($filePath)) {
+    if (!$cloudinaryUrl) {
         abort(404, 'File not found');
     }
 
-    $absolutePath = Storage::disk('local')->path($filePath);
-
-    return response()->file($absolutePath);
+    return redirect($cloudinaryUrl);
   }
 
   public function downloadDocument($id, $field)
@@ -55,14 +52,15 @@ class FileUploadApiController extends Controller
         abort(404, 'Invalid field');
     }
 
-    $filePath = $fileUpload->$field;
+    $cloudinaryUrl = $fileUpload->$field;
 
-    if (!$filePath || !Storage::disk('local')->exists($filePath)) {
+    if (!$cloudinaryUrl) {
         abort(404, 'File not found');
     }
 
-    $absolutePath = Storage::disk('local')->path($filePath);
+    // For Cloudinary, add fl_attachment flag to force download
+    $downloadUrl = str_replace('/upload/', '/upload/fl_attachment/', $cloudinaryUrl);
 
-    return response()->download($absolutePath);
+    return redirect($downloadUrl);
   }
 }
