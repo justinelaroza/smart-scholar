@@ -14,7 +14,7 @@
     <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-md">
       <p class="responsive-text-small">
         ⚠️ <strong>Upload Reminder:</strong> Please upload only <strong>clear and properly scanned</strong> documents. 
-        Accepted file types are <strong>JPG, JPEG, PNG, or PDF</strong> and the maximum file size is <strong>2MB</strong>.
+        Accepted file types are <strong>JPG, JPEG, or PNG</strong> and the maximum file size is <strong>2MB</strong>.
       </p>
     </div>
 

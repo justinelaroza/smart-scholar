@@ -61,7 +61,7 @@
                     @php
                       $qrBase64 = $app->qr_code ? 'data:image/png;base64,' . base64_encode($app->qr_code) : null;
                     @endphp
-                    <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition"
+                    <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
                     data-qr="{{ $qrBase64 }}">Qr</button>
                   @else
                     <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition">View</a>
@@ -99,7 +99,7 @@
                 @php
                   $qrBase64 = $app->qr_code ? 'data:image/png;base64,' . base64_encode($app->qr_code) : null;
                 @endphp
-                <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition"
+                <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
                 data-qr="{{ $qrBase64 }}">Qr</button>
               @else
                 <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition">View</a>
