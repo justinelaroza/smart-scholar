@@ -9,6 +9,7 @@ use App\Http\Controllers\Pages\ScholarshipController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\ProfileController;
+use App\Console\Commands\UpdateScholarshipStatus;
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
@@ -31,7 +32,6 @@ Route::post('/forgot-pass/verify-otp', [ForgotPasswordController::class, 'verify
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/facebook-feed-ajax', [HomeController::class, 'feedAjax']);
 
-//Scholarship
 Route::middleware('auth')->group(function () {
   Route::get('/scholarship/{id}/create', [ScholarshipController::class, 'create'])->name('scholarship.create');
   Route::post('/scholarship/{id}/create', [ScholarshipController::class, 'storeGeneralInfo'])->name('scholarship.generalinfo');
@@ -46,15 +46,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/scholarship', [ScholarshipController::class, 'index'])->name('scholarship');
 Route::get('/scholarship/{id}', [ScholarshipController::class, 'show'])->name('scholarship.show');
 
-
-
 //About
 Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
 
-//Profile
-
+Route::get('/cron/update-scholarships', [UpdateScholarshipStatus::class, 'updateScholarshipStatus']);
 
 
