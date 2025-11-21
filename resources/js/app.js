@@ -6,7 +6,14 @@ window.Swal = Swal;
 
 flatpickr(".datepicker", {
   dateFormat: "Y-m-d",
-  maxDate: "today"
+  maxDate: "today",
+  allowInput: true,
+  onReady: function(selectedDates, dateStr, instance) {
+    instance.input.setAttribute('placeholder', 'Birthday');
+  },
+  onOpen: function(selectedDates, dateStr, instance) {
+    instance.input.setAttribute('placeholder', 'Birthday');
+  }
 });
 
 const today = new Date().toISOString().split("T")[0];

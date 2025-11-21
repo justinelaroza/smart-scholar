@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/pages/support.js',
                 'resources/js/pages/upload.js',
                 'resources/js/components/navbar.js',
+                'resources/js/pages/progress.js',
             ],
             refresh: true,
         }),
