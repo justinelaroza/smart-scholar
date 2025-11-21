@@ -5,7 +5,6 @@ import Swal from 'sweetalert2'
 window.Swal = Swal;
 
 flatpickr(".datepicker", {
-  altInput: true,
   dateFormat: "Y-m-d",
   maxDate: "today"
 });

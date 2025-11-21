@@ -32,19 +32,13 @@
                 <input type="text" name="first_name" placeholder="First Name" class="register-input" value="{{ old('first_name') }}" required>
                 <input type="text" name="last_name" placeholder="Last Name" class="register-input" value="{{ old('last_name') }}" required>
 
-                <div class="flex flex-col">
-                  <label class="text-xs md:text-sm text-gray-700 mb-1">Gender</label>
-                  <select name="gender" class="register-input cursor-pointer" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male"   {{ old('gender') === 'Male' ? 'selected' : '' }}>Male</option>
-                    <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
-                  </select>
-                </div>
+                <select name="gender" class="register-input cursor-pointer" required>
+                  <option value="" disabled selected hidden>Gender</option>
+                  <option value="Male"   {{ old('gender') === 'Male' ? 'selected' : '' }}>Male</option>
+                  <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
+                </select>
 
-                <div class="flex flex-col">
-                  <label class="text-xs md:text-sm text-gray-700 mb-1">Birthday</label>
-                  <input type="text" name="birthday" class="datepicker register-input w-full max-w-full" placeholder="Birthday" value="{{ old('birthday') }}" required>
-                </div>
+                <input type="text" name="birthday" class="datepicker register-input w-full max-w-full" placeholder="Birthday" value="{{ old('birthday') }}" required>
               </div>
 
               <input type="text" name="address" placeholder="Full Address" class="register-input" value="{{ old('address') }}" required>

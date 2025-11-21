@@ -12,10 +12,10 @@
 }
 
 .login-input { 
-  @apply border p-2 rounded-sm md:p-3.5 md:rounded-md;  
+  @apply border p-2 rounded-md md:p-3.5;  
 } 
 .register-input { 
-  @apply border rounded-xs p-2 md:rounded-md md:p-3 text-sm;  
+  @apply border rounded-md p-2 md:p-3 text-sm;  
 } 
 .otp-input { 
   @apply w-1/6 border rounded-xl md:rounded-2xl text-center;  
