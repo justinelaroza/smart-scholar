@@ -17,6 +17,6 @@ class UpdateScholarshipStatus extends Command
 
         $count = Scholarship::where('status', 'Open')->where('submission_deadline', '<', $today)->update(['status' => 'Close']);
 
-        $this->info("Updated {$count} scholarships to Close.");
+        return $count;
     }
 }

@@ -13,7 +13,7 @@ class UpdateScholarshipStatusController extends Controller
       abort(403);
     }
     
-    Artisan::call('scholarships:update-status');
-    return response()->json(['success' => true, 'message' => 'Scholarships updated']);
+    $count = Artisan::call('scholarships:update-status');
+    return "Updated {$count} scholarships to Close!";
   }
 }

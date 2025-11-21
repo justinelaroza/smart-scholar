@@ -10,6 +10,7 @@ use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\ProfileController;
 use App\Console\Commands\UpdateScholarshipStatus;
+use App\Http\Controllers\Cron\UpdateScholarshipStatusController;
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
@@ -52,6 +53,6 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
 
-Route::get('/cron/update-scholarships', [UpdateScholarshipStatus::class, 'updateScholarshipStatus']);
+Route::get('/cron/update-scholarships', [UpdateScholarshipStatusController::class, 'updateScholarshipStatus']);
 
 
