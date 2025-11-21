@@ -10,6 +10,9 @@ use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\ProfileController;
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'OK'], 200);
+});
 
 //Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');
