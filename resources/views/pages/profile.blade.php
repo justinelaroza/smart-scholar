@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="flex flex-col w-full text-center md:text-left">
-          <h2 class="responsive-text-xl font-bold text-[#282740]">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
+          <h2 class="responsive-text-xl font-bold text-[#282740] line-clamp-2">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
           <p class="text-gray-600 mt-1 responsive-text-xs">Account Code: <span class="text-blue-600 font-semibold">{{ Auth::user()->account_code }}</span></p>
           <p class="text-gray-600 responsive-text-xs">Email: <span>{{ Auth::user()->email }}</span></p>
           <p class="text-gray-600 responsive-text-xs">Phone: <span>{{ Auth::user()->phone_number }}</span></p>
@@ -45,7 +45,7 @@
           <tbody>
             @forelse ($applications as $app)
               <tr class="border-b border-gray-200 hover:bg-indigo-50 transition">
-                <td class="px-6 py-4 font-medium text-gray-800 responsive-text-xs">{{ $app->scholarship->title }}</td>
+                <td class="px-6 py-4 font-medium text-gray-800 responsive-text-xs line-clamp-2 max-h-17">{{ $app->scholarship->title }}</td>
                 <td class="px-6 py-4">
                   <span class="{{ 
                     $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 
@@ -80,7 +80,7 @@
       <div class="md:hidden space-y-4">
         @forelse ($applications as $app)
           <div class="border border-gray-200 rounded-xl p-4 shadow-sm bg-gradient-to-tr from-indigo-50 to-white">
-            <p class="responsive-text-medium font-semibold text-gray-800">{{ $app->scholarship->title ?? 'Unknown' }}</p>
+            <p class="responsive-text-medium font-semibold text-gray-800 line-clamp-2">{{ $app->scholarship->title ?? 'Unknown' }}</p>
             <p class="responsive-text-small text-gray-600 mt-1">
               Status: <span class="{{ 
                 $app->progress === 'Approved' ? 'bg-green-100 text-green-700' : 

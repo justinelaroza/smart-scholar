@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
       Swal.fire({
         title: 'Your QR Code',
         imageUrl: qrImage,
-        imageWidth: 300,
-        imageHeight: 300,
+        imageWidth: 250,
+        imageHeight: 250,
         confirmButtonText: 'Close',
         showDenyButton: true,
         denyButtonText: 'Download',
