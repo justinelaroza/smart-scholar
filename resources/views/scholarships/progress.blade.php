@@ -115,7 +115,7 @@
         @if ($fileUpload->progress === 'Requires Revision')
 
           <div class="mt-8 text-center">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg responsive-text-small transition cursor-pointer">
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg responsive-text-small transition cursor-pointer">
               Resubmit All
             </button>
           </div>
@@ -127,4 +127,8 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+  @vite(['resources/js/pages/progress.js'])
 @endsection

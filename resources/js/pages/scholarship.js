@@ -51,7 +51,17 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        form.submit(); // submit form after confirmation
+        Swal.fire({
+          title: 'Uploading...',
+          text: 'Please wait while your files are being uploaded.',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        form.submit(); // submit form after showing loader
       }
     });
   });

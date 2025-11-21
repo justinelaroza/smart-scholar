@@ -15,8 +15,17 @@ class Scholarship extends Model
     protected $hidden = [
         'image'
     ];
+    
+    public function generalInfos()
+    {
+        return $this->hasMany(GeneralInfo::class);
+    }
 
-    // Add this accessor to handle binary image data
+    public function fileUploads()
+    {
+        return $this->hasMany(FileUpload::class);
+    }
+
     public function getImageBase64Attribute()
     {
         if (!$this->image) {
@@ -33,14 +42,4 @@ class Scholarship extends Model
         
         return base64_encode($imageData);
     }
-    
-  public function generalInfos()
-  {
-      return $this->hasMany(GeneralInfo::class);
-  }
-
-  public function fileUploads()
-  {
-      return $this->hasMany(FileUpload::class);
-  }
 }

@@ -4,7 +4,7 @@
 
 <div style="background-image: url('{{ asset('assets/images/bg-login.jpg') }}')" class="bg-cover bg-no-repeat bg-center min-h-dvh overflow-hidden flex items-center justify-center">
 
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row md:max-w-[95%]">
     <div id="panel" class="rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl p-2 flex flex-row gap-3 items-center justify-center bg-[rgb(59,0,151)] md:flex-col md:p-3 md:gap-5">
       <img class="h-24 w-auto md:h-auto md:w-5/6" src="{{ asset('assets/images/pg-logo.png') }}" alt="Padre Garcia logo">
       <div class="flex flex-col gap-1 md:gap-3 items-center justify-center">

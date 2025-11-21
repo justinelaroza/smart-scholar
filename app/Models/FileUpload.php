@@ -55,4 +55,21 @@ class FileUpload extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getQrCodeBase64Attribute()
+    {
+        if (!$this->qr_code) {
+            return null;
+        }
+        
+        $qrData = $this->qr_code;
+        
+        // Handle PostgreSQL resource stream
+        if (is_resource($qrData)) {
+            rewind($qrData);
+            $qrData = stream_get_contents($qrData);
+        }
+        
+        return base64_encode($qrData);
+    }
 }

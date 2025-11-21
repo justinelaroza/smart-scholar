@@ -58,11 +58,8 @@
                 </td>
                 <td class="px-6 py-4 text-center">
                   @if ($app->progress === 'Approved' && !empty($app->qr_code))
-                    @php
-                      $qrBase64 = $app->qr_code ? 'data:image/png;base64,' . base64_encode($app->qr_code) : null;
-                    @endphp
                     <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
-                    data-qr="{{ $qrBase64 }}">Qr</button>
+                    data-qr="data:image/png;base64,{{ $app->qr_code_base64 }}">Qr</button>
                   @else
                     <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition">View</a>
                   @endif
@@ -96,11 +93,8 @@
             </p>
             <div class="mt-3 flex justify-end gap-1">
               @if ($app->progress === 'Approved' && !empty($app->qr_code))
-                @php
-                  $qrBase64 = $app->qr_code ? 'data:image/png;base64,' . base64_encode($app->qr_code) : null;
-                @endphp
                 <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
-                data-qr="{{ $qrBase64 }}">Qr</button>
+                data-qr="data:image/png;base64,{{ $app->qr_code_base64 }}">Qr</button>
               @else
                 <a href="{{ route('scholarship.progress', ['id' => $app->scholarship->id]) }}" class="bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition">View</a>
               @endif
