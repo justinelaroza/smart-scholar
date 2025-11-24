@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Services\OtpService;
 
 class ForgotPasswordController extends Controller
 { 
@@ -17,53 +18,27 @@ class ForgotPasswordController extends Controller
         return view('auth.forgot-password');
     }
 
-    private function normalizePhoneNumber(string $phone): string
-    {
-        $digits = preg_replace('/\D/', '', $phone);
-
-        if (str_starts_with($digits, '0')) {
-            $digits = '63' . substr($digits, 1);
-        }
-
-        if (!str_starts_with($digits, '63')) {
-            $digits = '63' . $digits;
-        }
-
-        return $digits;
-    }
-
-    private function createOtp(string $phone): Otp
-    {
-        return Otp::create([
-            'phone_number' => $phone,
-            'code'         => (string) random_int(100000, 999999),
-            'expires_at'   => now()->addMinutes(5),
-            'used'         => false,
-        ]);
-    }
-
-    private function sendOtpSms(IprogSmsService $sms, string $phone, string $code): array
-    {
-        $message = "Your OTP code is {$code}. It will expire in 5 minutes.";
-        $resp = $sms->sendSms($phone, $message);
-
-        return $resp;
-    }
-
-    public function update(Request $request, IprogSmsService $sms)
+    public function update(Request $request, IprogSmsService $sms, OtpService $otpService)
     {
         $request->merge([
-            'phone' => $this->normalizePhoneNumber($request->input('phone'))
+            'phone' => $otpService->normalizePhoneNumber($request->input('phone'))
         ]);
 
         $validated = $request->validate([
-            'phone'    => 'required|string|max:15|exists:users,phone_number',
+            'phone' => [
+            'required', 'string', 'max:15', 'exists:users,phone_number',
+                function ($attr, $value, $fail) use ($otpService) {
+                    if (!$otpService->isValidPhilippineNumber($value)) {
+                        $fail('Invalid Philippine phone number.');
+                    }
+                }
+            ],
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         $phone = $validated['phone'];
-        $otp = $this->createOtp($phone);
-        $resp = $this->sendOtpSms($sms, $phone, $otp->code);
+        $otp = $otpService->createOtp($phone);
+        $resp = $otpService->sendOtpSms($sms, $phone, $otp->code);
 
         if (!$resp['ok']) {
             $otp->delete();
