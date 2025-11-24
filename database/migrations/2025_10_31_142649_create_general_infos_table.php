@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('general_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('scholarship_id')->constrained('scholarships')->onDelete('cascade');
             $table->string('client_name');
             $table->enum('sex',['Male','Female'])->default('Male');
             $table->integer('age');

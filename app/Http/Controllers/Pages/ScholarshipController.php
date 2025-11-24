@@ -185,7 +185,6 @@ class ScholarshipController extends Controller
 
         $generalInfoData = [
             'user_id' => Auth::id(),
-            'scholarship_id' => $id,
             'client_name' => $validated['client_name'],
             'sex' => $validated['client_sex'],
             'age' => $validated['client_age'],
