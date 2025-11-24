@@ -81,7 +81,7 @@ class ScholarshipController extends Controller
         $scholarship = Scholarship::findOrFail($id);
         $user = Auth::user();
 
-        if ($scholarship->status === 'Close' || now()->greaterThan($scholarship->submission_deadline)) {
+        if ($scholarship->status === 'Close') {
             return redirect()->route('scholarship.show', ['id' => $id])->with('error', 'This scholarship is already closed.');
         }
 
