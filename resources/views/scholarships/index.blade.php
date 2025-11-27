@@ -57,7 +57,7 @@
 
           @forelse ($scholarships as $scholarship)
 
-            <div class="flex flex-col md:flex-row justify-between items-center border p-4 md:p-6 gap-5 md:gap-10 bg-white rounded-lg shadow-sm">
+            <div class="scholarship-item flex flex-col md:flex-row justify-between items-center border p-4 md:p-6 gap-5 md:gap-10 bg-white rounded-lg shadow-sm" data-scholarship-id="{{ $scholarship->id }}">
             
               <div class="flex flex-col items-center md:items-start gap-4 w-full">
 
@@ -138,4 +138,11 @@
 
   </div>
     
+@endsection
+
+@section('scripts')
+  <script>
+    window.isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+  </script>
+  @vite(['resources/js/scholarships/index.js'])
 @endsection
