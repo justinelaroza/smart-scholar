@@ -54,14 +54,3 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
-
-Route::get('/dev/check-broadcast-config', function() {
-    return response()->json([
-        'broadcast_driver' => config('broadcasting.default'),
-        'pusher_key' => config('broadcasting.connections.pusher.key'),
-        'pusher_secret' => config('broadcasting.connections.pusher.secret') ? '✓ Set' : '✗ Missing',
-        'pusher_app_id' => config('broadcasting.connections.pusher.app_id'),
-        'pusher_cluster' => config('broadcasting.connections.pusher.options.cluster'),
-        'pusher_package_installed' => class_exists('Pusher\Pusher') ? '✓ Yes' : '✗ No',
-    ]);
-});

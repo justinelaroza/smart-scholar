@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 class BroadcastController extends Controller
 {
     public function scholarshipCreated(Request $request)
-    {       
+{       
+    try {
         $request->validate([
             'scholarship_id' => 'required|integer'
         ]);
@@ -25,13 +26,23 @@ class BroadcastController extends Controller
             return response()->json(['error' => 'Scholarship not found'], 404);
         }
         
+        // This is where it's failing
         broadcast(new ScholarshipCreated($scholarship));
         
         return response()->json([
             'message' => 'Broadcast sent successfully',
             'scholarship_id' => $scholarshipId
         ]);
+        
+    } catch (\Exception $e) {
+        // Return the actual error so we can see it
+        return response()->json([
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ], 500);
     }
+}
 
     public function scholarshipUpdated(Request $request)
     { 
