@@ -41,7 +41,7 @@ class ScholarshipCreated implements ShouldBroadcast
             'status' => $this->scholarship->status,
             'submission_deadline' => $this->scholarship->submission_deadline,
             'amount' => $this->scholarship->amount,
-            'image_base64' => $this->scholarship->image_base64,
+            'image_url' => $this->scholarship->image_url,
         ];
     }
 }

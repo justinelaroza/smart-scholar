@@ -29,23 +29,6 @@ class Scholarship extends Model
         return $this->hasMany(FileUpload::class);
     }
 
-    public function getImageBase64Attribute()
-    {
-        if (!$this->image) {
-            return null;
-        }
-        
-        $imageData = $this->image;
-        
-        // Handle PostgreSQL resource stream
-        if (is_resource($imageData)) {
-            rewind($imageData);
-            $imageData = stream_get_contents($imageData);
-        }
-        
-        return base64_encode($imageData);
-    }
-
     protected static function booted()
     {
         static::created(function ($scholarship) {

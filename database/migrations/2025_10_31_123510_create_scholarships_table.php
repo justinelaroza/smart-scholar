@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('submission_deadline');
             $table->integer('amount');
             $table->enum('status', ['Open', 'Close'])->default('Open');
-            $table->binary('image');
+            $table->string('image_url');
             $table->string('residency_requirement')->default('Padre Garcia, Batangas');
             $table->timestamps();
         });
