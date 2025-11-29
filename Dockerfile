@@ -28,6 +28,14 @@ RUN chmod -R 777 storage bootstrap/cache
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# Accept build arguments for Vite
+ARG VITE_PUSHER_APP_KEY
+ARG VITE_PUSHER_APP_CLUSTER
+
+# Set as environment variables for the build
+ENV VITE_PUSHER_APP_KEY=$VITE_PUSHER_APP_KEY
+ENV VITE_PUSHER_APP_CLUSTER=$VITE_PUSHER_APP_CLUSTER
+
 # Install and build frontend
 RUN npm install \
  && npm run build \
