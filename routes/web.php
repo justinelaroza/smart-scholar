@@ -55,18 +55,13 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
 
-Route::get('/dev/generate-token/{adminId}', function($adminId) {
-    $admin = App\Models\Admin::find($adminId);
-    
-    if (!$admin) {
-        return response()->json(['error' => 'Admin not found']);
-    }
-    
-    $token = $admin->createToken('broadcast-api-token');
-    
+Route::get('/dev/check-broadcast-config', function() {
     return response()->json([
-        'admin' => $admin->username,
-        'plaintext_token' => $token->plainTextToken,
-        'instructions' => 'Copy the plaintext_token and use it in Postman with: Authorization: Bearer {token}'
+        'broadcast_driver' => config('broadcasting.default'),
+        'pusher_key' => config('broadcasting.connections.pusher.key'),
+        'pusher_secret' => config('broadcasting.connections.pusher.secret') ? '✓ Set' : '✗ Missing',
+        'pusher_app_id' => config('broadcasting.connections.pusher.app_id'),
+        'pusher_cluster' => config('broadcasting.connections.pusher.options.cluster'),
+        'pusher_package_installed' => class_exists('Pusher\Pusher') ? '✓ Yes' : '✗ No',
     ]);
 });
