@@ -130,5 +130,5 @@
 @endsection
 
 @section('scripts')
-  @vite(['resources/js/pages/progress.js'])
+  @vite(['resources/js/scholarships/progress.js'])
 @endsection

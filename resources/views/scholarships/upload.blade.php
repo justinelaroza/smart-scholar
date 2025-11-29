@@ -82,5 +82,5 @@
 @endsection
 
 @section('scripts')
-  @vite(['resources/js/pages/upload.js'])
+  @vite(['resources/js/scholarships/upload.js'])
 @endsection

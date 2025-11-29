@@ -1,3 +1,5 @@
+import '../echo';
+
 document.addEventListener('DOMContentLoaded', function() {
     
     // Create notification element if it doesn't exist

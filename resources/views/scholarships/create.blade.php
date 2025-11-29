@@ -298,5 +298,5 @@
 @endsection
 
 @section('scripts')
-  @vite(['resources/js/pages/scholarship.js'])
+  @vite(['resources/js/scholarships/create.js'])
 @endsection
