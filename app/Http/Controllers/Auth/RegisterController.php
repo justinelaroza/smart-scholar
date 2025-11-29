@@ -104,11 +104,7 @@ class RegisterController extends Controller
 
     private function createUserFromRegistration(array $reg): User
     {
-        $userNumber = User::count() + 1;
-        $prefix = str_pad($userNumber, 2, '0', STR_PAD_LEFT);
-        $accountCode = "{$prefix}-" . strtoupper($reg['last_name']);
-
-        return User::create([
+        $user = User::create([
             'first_name'   => $reg['first_name'],
             'last_name'    => $reg['last_name'],
             'gender'       => $reg['gender'],
@@ -117,8 +113,15 @@ class RegisterController extends Controller
             'email'        => $reg['email'],
             'phone_number' => $reg['phone'],
             'password'     => Hash::make($reg['password']),
-            'account_code' => $accountCode,
+            'account_code' => 'TEMP',
         ]);
+
+        $prefix = str_pad($user->id, 2, '0', STR_PAD_LEFT);
+        $accountCode = "{$prefix}-" . strtoupper($reg['last_name']);
+
+        $user->update(['account_code' => $accountCode]);
+        
+        return $user;
     }
 
     private function jsonOrBack(Request $request, string $message, int $status = 422)
