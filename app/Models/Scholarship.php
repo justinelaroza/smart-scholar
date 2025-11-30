@@ -12,7 +12,7 @@ class Scholarship extends Model
     protected $fillable = [
         'title', 'funder', 'description', 'education_level', 
         'application_start', 'submission_deadline', 'amount', 
-        'status', 'image', 'residency_requirement'
+        'status', 'image_url', 'residency_requirement'
     ];
 
     protected $hidden = [

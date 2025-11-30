@@ -38,21 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
             removeScholarshipFromList(data.id);
             showNotification('🗑️ A scholarship has been removed');
         });
-    
-    function addScholarshipToList(data) {
-        // Find the container where scholarships are listed
-        const scholarshipContainer = document.querySelector('.w-full.flex.flex-col.gap-4.mt-5');
-        if (!scholarshipContainer) return;
-        
-        // Format the deadline
+
+    function createScholarshipHTML(data) {
         const deadline = new Date(data.submission_deadline);
         const formattedDeadline = `${String(deadline.getMonth() + 1).padStart(2, '0')}/${String(deadline.getDate()).padStart(2, '0')}/${deadline.getFullYear()}`;
         
-        // Create new scholarship card HTML matching your exact structure
-        const newScholarship = document.createElement('div');
-        newScholarship.setAttribute('data-scholarship-id', data.id);
-        newScholarship.className = 'scholarship-item flex flex-col md:flex-row justify-between items-center border p-4 md:p-6 gap-5 md:gap-10 bg-white rounded-lg shadow-sm';
-        newScholarship.innerHTML = `
+        return `
             <div class="flex flex-col items-center md:items-start gap-4 w-full">
                 <div class="flex flex-row gap-4 w-full items-start">
                     <div class="w-[100px] min-w-[100px] h-[100px] bg-gray-100 flex md:min-w-[170px] md:w-[170px] md:h-[170px] border rounded-md md:rounded-lg overflow-hidden">
@@ -93,6 +84,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </a>
             </div>
         `;
+    }
+    
+    function addScholarshipToList(data) {
+        const scholarshipContainer = document.querySelector('.w-full.flex.flex-col.gap-4.mt-5');
+        if (!scholarshipContainer) return;
+        
+        // Create new scholarship card
+        const newScholarship = document.createElement('div');
+        newScholarship.setAttribute('data-scholarship-id', data.id);
+        newScholarship.className = 'scholarship-item flex flex-col md:flex-row justify-between items-center border p-4 md:p-6 gap-5 md:gap-10 bg-white rounded-lg shadow-sm';
+        newScholarship.innerHTML = createScholarshipHTML(data);
         
         // Add to top of list with animation
         newScholarship.style.opacity = '0';
@@ -127,21 +129,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updateScholarshipInList(data) {
         const scholarshipElement = document.querySelector(`[data-scholarship-id="${data.id}"]`);
-        if (scholarshipElement) {
-            // Find and update status badge
-            const statusElements = scholarshipElement.querySelectorAll('span');
-            statusElements.forEach(span => {
-                if (span.textContent.trim() === 'Open' || span.textContent.trim() === 'Close') {
-                    span.textContent = data.status;
-                    span.className = `font-medium text-white rounded-2xl px-5 py-1 ${data.status === 'Open' ? 'bg-green-500' : 'bg-red-500'}`;
-                }
-            });
-            // Visual feedback
-            scholarshipElement.classList.add('ring-2', 'ring-blue-500', 'transition-all');
-            setTimeout(() => {
-                scholarshipElement.classList.remove('ring-2', 'ring-blue-500');
-            }, 2000);
-        }
+        if (!scholarshipElement) return;
+        
+        // Replace entire content with updated HTML
+        scholarshipElement.innerHTML = createScholarshipHTML(data);
+        
+        // Visual feedback - highlight the entire card
+        scholarshipElement.classList.add('ring-2', 'ring-blue-500', 'transition-all');
+        
+        // Add a subtle scale animation
+        scholarshipElement.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+            scholarshipElement.style.transform = 'scale(1)';
+        }, 200);
+        
+        setTimeout(() => {
+            scholarshipElement.classList.remove('ring-2', 'ring-blue-500');
+        }, 2000);
     }
     
     function removeScholarshipFromList(id) {

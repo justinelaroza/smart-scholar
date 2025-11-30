@@ -54,19 +54,3 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
-
-Route::get('/dev/generate-token/{adminId}', function($adminId) {
-    $admin = App\Models\Admin::find($adminId);
-    
-    if (!$admin) {
-        return response()->json(['error' => 'Admin not found']);
-    }
-    
-    $token = $admin->createToken('broadcast-api-token');
-    
-    return response()->json([
-        'admin' => $admin->username,
-        'plaintext_token' => $token->plainTextToken,
-        'instructions' => 'Copy the plaintext_token and use it in Postman with: Authorization: Bearer {token}'
-    ]);
-});
