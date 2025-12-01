@@ -44,7 +44,7 @@
           </thead>
           <tbody>
             @forelse ($applications as $app)
-              <tr class="border-b border-gray-200 hover:bg-indigo-50 transition">
+              <tr class="border-b border-gray-200 hover:bg-indigo-50 transition" data-application-id="{{ $app->id }}">
                 <td class="px-6 py-4 font-medium text-gray-800 responsive-text-xs line-clamp-2 max-h-17">{{ $app->scholarship->title }}</td>
                 <td class="px-6 py-4">
                   <span class="{{ 
@@ -79,7 +79,7 @@
 
       <div class="md:hidden space-y-4">
         @forelse ($applications as $app)
-          <div class="border border-gray-200 rounded-xl p-4 shadow-sm bg-gradient-to-tr from-indigo-50 to-white">
+          <div class="border border-gray-200 rounded-xl p-4 shadow-sm bg-gradient-to-tr from-indigo-50 to-white" data-application-id="{{ $app->id }}">
             <p class="responsive-text-medium font-semibold text-gray-800 line-clamp-2">{{ $app->scholarship->title ?? 'Unknown' }}</p>
             <p class="responsive-text-small text-gray-600 mt-1">
               Status: <span class="{{ 
@@ -219,6 +219,10 @@
 @endsection
 
 @section('scripts')
+
+  <script>
+    window.userId = {{ auth()->id() }};
+  </script>
 
   @vite(['resources/js/pages/profile.js'])
 
