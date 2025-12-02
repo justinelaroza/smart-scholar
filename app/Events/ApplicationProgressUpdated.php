@@ -36,18 +36,10 @@ class ApplicationProgressUpdated implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        $data = [
+        return [
             'application_id' => $this->application->id,
-            'scholarship_id' => $this->application->scholarship_id,
             'scholarship_title' => $this->application->scholarship->title,
             'progress' => $this->application->progress,
-            'qr_code_base64' => null
         ];
-
-        if ($this->application->progress === 'Approved' && !empty($this->application->qr_code)) {
-            $data['qr_code_base64'] = base64_encode($this->application->qr_code);
-        }
-
-        return $data;
     }
 }

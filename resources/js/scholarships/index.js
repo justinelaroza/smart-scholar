@@ -24,17 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.Echo.channel('scholarships')
         .listen('.scholarship.created', (data) => {
-            console.log('✓ New scholarship created:', data);
             addScholarshipToList(data);
             showNotification('🎉 New scholarship: ' + data.title);
         })
         .listen('.scholarship.updated', (data) => {
-            console.log('✓ Scholarship updated:', data);
             updateScholarshipInList(data);
             showNotification('✏️ Scholarship updated: ' + data.title);
         })
         .listen('.scholarship.deleted', (data) => {
-            console.log('✓ Scholarship deleted:', data);
             removeScholarshipFromList(data.id);
             showNotification('🗑️ A scholarship has been removed');
         });

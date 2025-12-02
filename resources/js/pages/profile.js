@@ -89,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 10000);
   }
 
-  // Update application in the list
   function updateApplicationInList(data) {
     // For desktop table view
     const desktopRow = document.querySelector(`tr[data-application-id="${data.application_id}"]`);
@@ -106,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateDesktopRow(row, data) {
     const statusCell = row.querySelector('td:nth-child(2) span');
-    const actionCell = row.querySelector('td:nth-child(3)');
     
     if (statusCell) {
       // Update status badge
@@ -125,21 +123,10 @@ document.addEventListener('DOMContentLoaded', function () {
         row.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-50');
       }, 2000);
     }
-
-    // Update action button if approved and has QR
-    if (data.progress === 'Approved' && data.qr_code_base64) {
-      actionCell.innerHTML = `
-        <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
-        data-qr="data:image/png;base64,${data.qr_code_base64}">Qr</button>
-      `;
-      // Re-attach QR button event
-      attachQrButtonEvent(actionCell.querySelector('.qr-btn'));
-    }
   }
 
   function updateMobileCard(card, data) {
     const statusSpan = card.querySelector('p:nth-child(2) span');
-    const actionDiv = card.querySelector('.mt-3');
     
     if (statusSpan) {
       // Update status badge
@@ -157,16 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(() => {
         card.classList.remove('ring-2', 'ring-blue-500');
       }, 2000);
-    }
-
-    // Update action button if approved and has QR
-    if (data.progress === 'Approved' && data.qr_code_base64) {
-      actionDiv.innerHTML = `
-        <button class="qr-btn bg-[#4f46e5] hover:bg-[#3730a3] text-white px-5 py-2 rounded-lg responsive-text-xs shadow transition cursor-pointer"
-        data-qr="data:image/png;base64,${data.qr_code_base64}">Qr</button>
-      `;
-      // Re-attach QR button event
-      attachQrButtonEvent(actionDiv.querySelector('.qr-btn'));
     }
   }
 
@@ -232,16 +209,19 @@ document.addEventListener('DOMContentLoaded', function () {
   if (window.userId) {
     window.Echo.channel(`user.${window.userId}`)
       .listen('.application.progress.updated', (data) => {
-        console.log('✓ Application progress updated:', data);
         
-        // Update the UI without reloading
-        updateApplicationInList(data);
-        
-        // Show notification
-        const statusIcon = data.progress === 'Approved' ? '✅' : 
-                          data.progress === 'Rejected' ? '❌' : 
-                          data.progress === 'Requires Revision' ? '⚠️' : '📝';
-        showNotification(`${statusIcon} Application updated: ${data.scholarship_title} - ${data.progress}`);
+        if (data.progress === 'Approved') {
+          showNotification(`✅ Application approved: ${data.scholarship_title} - Reloading page...`);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          updateApplicationInList(data);
+          
+          const statusIcon = data.progress === 'Rejected' ? '❌' : 
+                            data.progress === 'Requires Revision' ? '⚠️' : '📝';
+          showNotification(`${statusIcon} Application updated: ${data.scholarship_title} - ${data.progress}`);
+        }
       });
   }
 
