@@ -88,6 +88,9 @@ class BroadcastController extends Controller
             return response()->json(['error' => 'Application not found'], 404);
         }
 
+        $application->refresh();
+        $application->load('scholarship');
+        
         event(new ApplicationProgressUpdated($application));
         
         return response()->json([
