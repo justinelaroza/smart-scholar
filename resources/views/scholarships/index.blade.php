@@ -91,7 +91,7 @@
                     </p>
                     @auth
                       <p class="text-center md:text-start">Application Status<br>
-                        <span class="font-medium text-white rounded-2xl px-5 py-1
+                        <span class="font-medium text-white rounded-2xl px-5 py-1 text-nowrap
                           {{ $scholarship->has_applied ? 'bg-green-500' : 'bg-red-500' }}">
                           {{ $scholarship->has_applied ? 'Applied' : 'Not Applied' }}
                         </span>
