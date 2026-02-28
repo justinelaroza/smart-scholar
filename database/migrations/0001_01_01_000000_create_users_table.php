@@ -5,6 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Hash;
+
 return new class extends Migration
 {
     /**
@@ -42,6 +44,22 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        DB::table('users')->insert([
+            'account_code'      => '01-PEREZ',
+            'password'          => Hash::make('password'),
+            'first_name'        => 'Jose',
+            'last_name'         => 'Perez',
+            'gender'            => 'Male',
+            'birthday'          => '1995-06-10',
+            'full_address'      => '123 Rizal St, Manila',
+            'email'             => 'jose.perez@email.com',
+            'phone_number'      => '09171234567',
+            'email_verified_at' => now(),
+            'remember_token'    => null,
+            'created_at'        => now(),
+            'updated_at'        => now(),
+        ]);
     }
 
     /**
