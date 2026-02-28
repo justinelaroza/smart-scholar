@@ -55,6 +55,7 @@ Route::get('/about', [AboutController::class, 'show'])->name('about');
 //Support
 Route::get('/support', [SupportController::class, 'show'])->name('support');
 
+/* SANCTUM
 Route::get('/dev/generate-token/{adminId}', function($adminId) {
     $admin = App\Models\Admin::find($adminId);
     
@@ -70,3 +71,5 @@ Route::get('/dev/generate-token/{adminId}', function($adminId) {
         'instructions' => 'Copy the plaintext_token and use it in Postman with: Authorization: Bearer {token}'
     ]);
 });
+
+*/
